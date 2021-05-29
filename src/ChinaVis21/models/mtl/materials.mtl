@@ -1,0 +1,4 @@
+# Made in Blockbench 3.8.4
+newmtl m_1
+map_Kd texture.png
+newmtl none
