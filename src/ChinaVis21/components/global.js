@@ -112,7 +112,7 @@ $(document).ready(function () {
         window.addEventListener("resize", resize)
     })();
 
-    d3.select('#maskDiv').on('click',landscape)
+    d3.select('#maskDiv').on('click',()=>lockOrientation('landscape'))
 })
 
 function scrollTo(page, callback){
@@ -124,12 +124,20 @@ function scrollTo(page, callback){
     }
 }
 
-function landscape(){
-     document.documentElement.requestFullscreen().then(() => {
-        screen.orientation
-            .lock('landscape')
-            .catch(function(e) { alert(e.message); });
-     })
+function lockOrientation (orientation) {
+    // Go into full screen first
+    if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+    } else if (document.documentElement.mozRequestFullScreen) {
+        document.documentElement.mozRequestFullScreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) {
+        document.documentElement.msRequestFullscreen();
+    }
+
+    // Then lock orientation
+    screen.orientation.lock(orientation);
 }
 
 // window.onload = function() {

@@ -2,6 +2,13 @@ body::-webkit-scrollbar {
     display: none;
 }
 
+/*@media only screen and (orientation:portrait){*/
+/*    body {*/
+/*        height: 100vw;*/
+/*        transform: rotate(90deg);*/
+/*    }*/
+/*}*/
+
 @font-face {
     font-family: 'Old Newspapers Sung';
     src: url('../font/Old-Newspapers-Sung_1.woff');
