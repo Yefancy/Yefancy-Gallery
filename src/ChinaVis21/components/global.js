@@ -87,11 +87,13 @@ function enableScroll() {
 let Page = 0
 let widthDiv
 let maskDiv
+let flowPin
 let pageHeight = window.innerHeight
 
 $(document).ready(function () {
     widthDiv = $('#widthDiv');
     maskDiv = $('#maskDiv');
+    flowPin = $('#flowPin');
     $('#maskDiv').bind({
         click: ()=>lockOrientation('landscape'),
         mousemove: ()=>lockOrientation('landscape')
@@ -109,6 +111,8 @@ $(document).ready(function () {
         }
         widthDiv.css('top', `${-pageHeight * Page}px`)
         maskDiv.css('top', `${pageHeight}px`)
+        let per = pageHeight / 1080
+        flowPin.css('transform', `translate(${(width - per * 1920) / 2}px, 0px)scale(${per})`)
     }
     window.addEventListener("resize", resize)
     resize()

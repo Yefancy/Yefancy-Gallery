@@ -47,3 +47,7 @@ function hidePin(index, func) {
     return false
 }
 
+function fpResize(){
+
+}
+

@@ -198,7 +198,7 @@ $(document).ready(function () {
                 for (let i = 0; i < data_clean.loc_comments.length; i++) {
                     if(sum + data_clean.loc_comments[i].length > hoverObject.ci) {
                         let comment = data_clean.loc_comments[i][hoverObject.ci - sum]
-                        showPin(1920 / 2 - 220 / 2, 1080 / 2 - 536 / 2, 3, {0:comment.name, 1:comment.location, 2:comment.comment})
+                        showPin(1920 / 2 - 220 / 2, 1080 / 2 - 536 / 2 -20, 3, {0:comment.name, 1:comment.location, 2:comment.comment})
                         rope_index = i
                         let rope = $('#rope')
                         rope.css('display', '')
@@ -288,7 +288,7 @@ $(document).ready(function () {
                     hoverObject = intersects[0].object
                     hoverObject.material.color.set('#f6d6d6');
                     hoverObject.material.opacity = 1
-                    controls.autoRotateSpeed = 0.1
+                    controls.autoRotateSpeed = IsPC() ? 0.1 : 0
                 }
             } else {
                 let find = false

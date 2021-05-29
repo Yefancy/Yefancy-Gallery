@@ -113,6 +113,21 @@ $(document).ready(function () {
             clickBuilding(selected_building)
         }
     })
+    div.bind('touchstart',function (e){
+        let touch = e.originalEvent.targetTouches[0]
+        let rect = e.target.getBoundingClientRect()
+        mouse.x = ((touch.pageX - rect.x) / rect.width ) * 2 - 1;
+        mouse.y = - ((touch.pageY - rect.y) / rect.height ) * 2 + 1;
+        rayCaster.setFromCamera(mouse, camera);
+        // 计算物体和射线的焦点
+        const intersects = rayCaster.intersectObjects(buildingsMeshesGroup.children, true);
+        if(intersects.length > 0) {
+            let index = 7 - intersects[0].object.name
+            clickBuilding(4 === index ? 6:6 === index ? 4 : index)
+        } else {
+            clickBuilding(selected_building)
+        }
+    })
 
     opt_hospitalRenderer.startAnima = function startHospitalRender() {
         anima = true
