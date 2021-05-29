@@ -89,31 +89,40 @@ let widthDiv
 let maskDiv
 let pageHeight = window.innerHeight
 
+function resize() {
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    if (width / height > 1920 / 1080) {
+        widthDiv.css('width', `${192000 / (1080 * width / height)}%`)
+        pageHeight = height
+    } else {
+        // widthDiv.css('width', `${192000 / (1080 * width / height)}%`)
+        pageHeight = width * 1080 / 1920
+        widthDiv.css('width', '100%')
+    }
+    widthDiv.css('top', `${-pageHeight * Page}px`)
+    maskDiv.css('top', `${pageHeight}px`)
+}
+
 $(document).ready(function () {
     widthDiv = $('#widthDiv');
     maskDiv = $('#maskDiv');
-    (function () {
-        function resize() {
-            let width = window.innerWidth;
-            let height = window.innerHeight;
-            if (width / height > 1920 / 1080) {
-                widthDiv.css('width', `${192000 / (1080 * width / height)}%`)
-                pageHeight = height
-            } else {
-                // widthDiv.css('width', `${192000 / (1080 * width / height)}%`)
-                pageHeight = width * 1080 / 1920
-                widthDiv.css('width', '100%')
-            }
-            widthDiv.css('top', `${-pageHeight * Page}px`)
-            maskDiv.css('top', `${pageHeight}px`)
-        }
-
-        resize();
-        window.addEventListener("resize", resize)
-    })();
-
     d3.select('#maskDiv').on('click',()=>lockOrientation('landscape'))
+    window.addEventListener("resize", resize)
 })
+
+function IsPC() {
+    var userAgentInfo = navigator.userAgent;
+    var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+            flag = false;
+            break;
+        }
+    }
+    return flag;
+}
 
 function scrollTo(page, callback){
     if(page !== Page) {
@@ -125,6 +134,7 @@ function scrollTo(page, callback){
 }
 
 function lockOrientation (orientation) {
+    if(IsPC()) return
     // Go into full screen first
     if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen();
@@ -140,9 +150,10 @@ function lockOrientation (orientation) {
     screen.orientation.lock(orientation);
 }
 
-// window.onload = function() {
-//     // landscape()
-// }
+window.onload = function() {
+    lockOrientation('landscape')
+    resize()
+}
 
 
 
