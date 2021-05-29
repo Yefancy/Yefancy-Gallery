@@ -111,14 +111,17 @@ $(document).ready(function () {
         resize();
         window.addEventListener("resize", resize)
     })();
-    (function() {
-        document.documentElement.requestFullscreen().then(() => {
-            screen
-                .orientation
-                .lock('landscape')
-                .catch(function(e) { alert(e.message); });
-        })
-    })();
+    setTimeout(()=>{
+        (function() {
+            document.documentElement.requestFullscreen().then(() => {
+                screen
+                    .orientation
+                    .lock('landscape')
+                    .catch(function(e) { alert(e.message); });
+            })
+        })();
+    }, 3000)
+
 })
 
 function scrollTo(page, callback){
