@@ -176,7 +176,7 @@ $(document).ready(function () {
     let progress_bar_chart = progressSvg.select('#progressBarChart').selectAll('rect')
     let filter = 0 // 0-all 1-m 2-l 3-p
     let dragDate = null
-    let jumpPage = 5
+    let jumpPage = 3
 
     function updateBarChart(dragDate, callback){
         let op = 0.4
@@ -764,12 +764,12 @@ $(document).ready(function () {
             if (isDown) {
                 index++
             } else {
-                jumpPage = 5
+                jumpPage = 3
                 index--
             }
-            if (index < 0 || index >= data_clean.weibo_date.length || data_clean.weibo_date[index] == dragDate) {
+            if (index < 0 || index >= data_clean.weibo_date.length || data_clean.weibo_date[index] === dragDate) {
                 if (index >= data_clean.weibo_date.length) {
-                    if(jumpPage == 0){
+                    if(jumpPage === 0){
                         stage_5()
                     } else {
                         jumpPage--
@@ -782,7 +782,7 @@ $(document).ready(function () {
             progress_pin.select('text').text(`20/${dragDate}`)
             let tmpdate = dragDate
             setTimeout(()=>{
-                if(tmpdate == dragDate){
+                if(tmpdate === dragDate){
                     rayCity()
                 }
             },300)
