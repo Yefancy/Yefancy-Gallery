@@ -612,7 +612,7 @@ $(document).ready(function () {
     }).bind('touchmove', function(event){
         let touch = event.originalEvent.targetTouches[0]
         let nowPos = {x:touch.pageX, y:touch.pageY};
-        if(Math.abs(nowPos.y - startPos.y) > 50) {
+        if(Math.abs(nowPos.y - startPos.y) > 20) {
             if(nowPos.y < startPos.y){
                 scrollHandler(event, true)
             } else if(nowPos.y > startPos.y) {
