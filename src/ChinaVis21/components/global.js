@@ -107,7 +107,7 @@ function resize() {
 $(document).ready(function () {
     widthDiv = $('#widthDiv');
     maskDiv = $('#maskDiv');
-    d3.select('#maskDiv').on('click',()=>lockOrientation('landscape'))
+    $('#maskDiv').bind({'click': ()=>lockOrientation('landscape'), 'touchstart': ()=>lockOrientation('landscape')})
     window.addEventListener("resize", resize)
 })
 
@@ -151,7 +151,6 @@ function lockOrientation (orientation) {
 }
 
 window.onload = function() {
-    lockOrientation('landscape')
     resize()
 }
 
