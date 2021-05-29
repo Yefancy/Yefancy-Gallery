@@ -125,11 +125,11 @@ function scrollTo(page, callback){
 }
 
 function landscape(){
-    // document.documentElement.requestFullscreen().then(() => {
+     document.documentElement.requestFullscreen().then(() => {
         screen.orientation
             .lock('landscape')
             .catch(function(e) { alert(e.message); });
-    // })
+     })
 }
 
 // window.onload = function() {
