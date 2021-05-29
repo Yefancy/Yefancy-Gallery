@@ -86,15 +86,12 @@ function enableScroll() {
 
 let Page = 0
 let widthDiv
+let maskDiv
 let pageHeight = window.innerHeight
 
 $(document).ready(function () {
-    window.scrollTo(0,0)
-    setTimeout(()=>{
-        window.scrollTo(0,0)
-        enableScroll()
-    },400)
     widthDiv = $('#widthDiv');
+    maskDiv = $('#maskDiv');
     (function () {
         function resize() {
             let width = window.innerWidth;
@@ -108,6 +105,7 @@ $(document).ready(function () {
                 widthDiv.css('width', '100%')
             }
             widthDiv.css('top', `${-pageHeight * Page}px`)
+            maskDiv.css('top', `${pageHeight}px`)
         }
 
         resize();
@@ -123,4 +121,6 @@ function scrollTo(page, callback){
         Page = page
     }
 }
+
+screen.orientation.lock('landscape-primary')
 
