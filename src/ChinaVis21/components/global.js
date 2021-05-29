@@ -111,17 +111,8 @@ $(document).ready(function () {
         resize();
         window.addEventListener("resize", resize)
     })();
-    setTimeout(()=>{
-        (function() {
-            document.documentElement.requestFullscreen().then(() => {
-                screen
-                    .orientation
-                    .lock('landscape')
-                    .catch(function(e) { alert(e.message); });
-            })
-        })();
-    }, 3000)
 
+    d3.select('#maskDiv').on('click',landscape)
 })
 
 function scrollTo(page, callback){
@@ -132,6 +123,18 @@ function scrollTo(page, callback){
         Page = page
     }
 }
+
+function landscape(){
+    // document.documentElement.requestFullscreen().then(() => {
+        screen.orientation
+            .lock('landscape')
+            .catch(function(e) { alert(e.message); });
+    // })
+}
+
+// window.onload = function() {
+//     // landscape()
+// }
 
 
 
