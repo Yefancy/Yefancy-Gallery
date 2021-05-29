@@ -47,7 +47,7 @@ class Water extends Mesh {
 
         const flowMap = options.flowMap || undefined;
         const normalMap0 = options.normalMap0 || textureLoader.load( 'resources/water/Water_1_M_Normal.jpg' );
-        const normalMap1 = options.normalMap1 || textureLoader.load( 'resources//water/Water_2_M_Normal.jpg' );
+        const normalMap1 = options.normalMap1 || textureLoader.load( 'resources/water/Water_2_M_Normal.jpg' );
 
         // normalMap0.repeat.set(512, 512)
         // normalMap1.repeat.set(512, 512)

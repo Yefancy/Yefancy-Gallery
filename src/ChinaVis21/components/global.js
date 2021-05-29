@@ -107,7 +107,10 @@ function resize() {
 $(document).ready(function () {
     widthDiv = $('#widthDiv');
     maskDiv = $('#maskDiv');
-    $('#maskDiv').bind({'click': ()=>lockOrientation('landscape'), 'touchstart': ()=>lockOrientation('landscape')})
+    $('#maskDiv').bind({
+        click: ()=>lockOrientation('landscape'),
+        mousemove: ()=>lockOrientation('landscape')
+    });
     window.addEventListener("resize", resize)
 })
 
