@@ -111,6 +111,14 @@ $(document).ready(function () {
         resize();
         window.addEventListener("resize", resize)
     })();
+    (function() {
+        document.documentElement.requestFullscreen().then(() => {
+            screen
+                .orientation
+                .lock('landscape')
+                .catch(function(e) { alert(e.message); });
+        })
+    })();
 })
 
 function scrollTo(page, callback){
@@ -122,5 +130,5 @@ function scrollTo(page, callback){
     }
 }
 
-screen.orientation.lock('landscape-primary')
+
 
