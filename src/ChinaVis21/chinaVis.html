@@ -9,7 +9,6 @@
     <script src="js/D3/d3.js"></script>
     <script src="js/Tween/tween.umd.js"></script>
     <script src="js/JQuery/jquery-3.4.1.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="js/Three/three.js"></script>
     <script src="js/Three/controls/OrbitControls.js"></script>
     <script src="js/Three/loaders/OBJLoader.js"></script>
@@ -37,7 +36,7 @@
 
 </head>
 <body style="background-color:#1a1b1e;" onselectstart="return false">
-<div id="flowPin">
+<div id="flowPin" style="position: fixed; z-index: 2;">
     <div id="hospital_div"
          style="height: 300px; display:none; opacity: 0; width: 400px; position: fixed; top:20px; left:90px"></div>
 
@@ -1999,7 +1998,7 @@
                 </text>
             </g>
         </svg>
-        <div id="sakuraWBDiv" style="width: 100%; position: absolute; top: 27.19%; "></div>
+        <div id="sakuraWBDiv" style="width: 100%; position: absolute; top: 27.1%; "></div>
         <svg id="fireSvg" viewBox="0 0 1920 1080" width=100%>
             <text x="120" y="350" text-anchor="middle" font-size="50px" fill="white" font-family="Old Newspapers Sung">
                 电力

@@ -51,7 +51,7 @@ opt_fire = {
     buildingMap: [4, 1, 6, 0, 5, 2, 3, 7],
     lineSize: [8, 8, 8, 8, 8, 5, 5, 4],
     minHeight: 0,
-    debug: false,
+    debug: true,
 }
 
 stage_ff = 0

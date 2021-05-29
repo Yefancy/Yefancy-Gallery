@@ -23,7 +23,7 @@ $(document).ready(function () {
     let height = 980
     let dur = 10
     let min_scroll = - 5 * dur
-    let max_scroll = height + 5 * dur
+    let max_scroll = 710
     let scroll_sakura = min_scroll
 
     function scrollHandler(event, isDown){
@@ -31,6 +31,7 @@ $(document).ready(function () {
             let tmp
             if(isDown) {
                 tmp = scroll_sakura + dur
+                console.log(tmp);
                 if(tmp < max_scroll) {
                     if (tmp <= 0 || tmp > height) {
                         scroll_sakura += dur
@@ -38,7 +39,7 @@ $(document).ready(function () {
                         scroll_sakura += dur
                         opt_cityBridge.showBarDots(scroll_sakura + 100)
                     }
-                } else if (tmp == max_scroll){
+                } else if (tmp === max_scroll){
                     stage_ss = 0
                     scrollTo(2, ()=>{
                         opt_sakura.stopAnima()
@@ -53,7 +54,7 @@ $(document).ready(function () {
                         scroll_sakura -= dur
                         opt_cityBridge.showBarDots(scroll_sakura + 100)
                     }
-                } else if(tmp == min_scroll) {
+                } else if(tmp === min_scroll) {
                     stage_ss = 0
                     opt_mainVis.stage2()
                     scrollTo(0,()=>{

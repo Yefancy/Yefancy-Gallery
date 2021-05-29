@@ -116,7 +116,7 @@ $(document).ready(function () {
 })
 
 function scrollTo(page, callback){
-    if(page != Page) {
+    if(page !== Page) {
         widthDiv.animate({top: `${-pageHeight * page}px`}, 1000, ()=>{
             callback&&callback()
         })

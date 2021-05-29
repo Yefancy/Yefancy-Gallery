@@ -7,7 +7,7 @@ opt_mainVis = {
     color_1: '#3DB6C7',
     color_2: '#3DC7AE',
     color_3: '#E2B094',
-    debug: false
+    debug: true
 }
 
 let stage_dd = 0
@@ -726,13 +726,13 @@ $(document).ready(function () {
             sakura_left.remove()
         sakura_left=null
 
-        d3.select('#river').transition().duration(2000)
+        d3.select('#river').transition().duration(1000)
             .attr('opacity', 0)
-        d3.select('#roadSvg').transition().duration(2000)
+        d3.select('#roadSvg').transition().duration(1000)
             .attr('opacity', 0)
-        d3.select('#progress').transition().duration(2000)
+        d3.select('#progress').transition().duration(1000)
             .attr('opacity', 0)
-        d3.select('#sakuraWuHan').transition().duration(2000)
+        d3.select('#sakuraWuHan').transition().duration(1000)
             .attr('opacity', 0)
             .on('end', function (e){
                 d3.select('#cityBridgeSvg').transition().duration(1000)
