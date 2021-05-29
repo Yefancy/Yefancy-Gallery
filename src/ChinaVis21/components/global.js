@@ -89,21 +89,6 @@ let widthDiv
 let maskDiv
 let pageHeight = window.innerHeight
 
-function resize() {
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    if (width / height > 1920 / 1080) {
-        widthDiv.css('width', `${192000 / (1080 * width / height)}%`)
-        pageHeight = height
-    } else {
-        // widthDiv.css('width', `${192000 / (1080 * width / height)}%`)
-        pageHeight = width * 1080 / 1920
-        widthDiv.css('width', '100%')
-    }
-    widthDiv.css('top', `${-pageHeight * Page}px`)
-    maskDiv.css('top', `${pageHeight}px`)
-}
-
 $(document).ready(function () {
     widthDiv = $('#widthDiv');
     maskDiv = $('#maskDiv');
@@ -111,7 +96,22 @@ $(document).ready(function () {
         click: ()=>lockOrientation('landscape'),
         mousemove: ()=>lockOrientation('landscape')
     });
+    function resize() {
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        if (width / height > 1920 / 1080) {
+            widthDiv.css('width', `${192000 / (1080 * width / height)}%`)
+            pageHeight = height
+        } else {
+            // widthDiv.css('width', `${192000 / (1080 * width / height)}%`)
+            pageHeight = width * 1080 / 1920
+            widthDiv.css('width', '100%')
+        }
+        widthDiv.css('top', `${-pageHeight * Page}px`)
+        maskDiv.css('top', `${pageHeight}px`)
+    }
     window.addEventListener("resize", resize)
+    resize()
 })
 
 function IsPC() {
@@ -151,10 +151,6 @@ function lockOrientation (orientation) {
 
     // Then lock orientation
     screen.orientation.lock(orientation);
-}
-
-window.onload = function() {
-    resize()
 }
 
 
