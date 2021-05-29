@@ -14,6 +14,9 @@ let data_lastKM = [
     {name:'洪山区', data:[365, 264, 1142, 605]},
 ]
 
+let opt_lastKM = {
+
+}
 let stage_ll = 0
 $(document).ready(function () {
     let sds = []
@@ -214,6 +217,7 @@ $(document).ready(function () {
             })
 
     }
+    opt_lastKM.stage1 = stage_1
 
     function stage_2(){
         console.log('stage_ll_2_enter')

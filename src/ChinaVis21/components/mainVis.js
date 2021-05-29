@@ -735,12 +735,7 @@ $(document).ready(function () {
         d3.select('#sakuraWuHan').transition().duration(1000)
             .attr('opacity', 0)
             .on('end', function (e){
-                d3.select('#cityBridgeSvg').transition().duration(1000)
-                    .attr('transform', 'translate(0 1060)');
-                opt_sakura.startAnima()
-                scrollTo(1, ()=>{
-                    stage_ss = 1
-                })
+                scrollTo(1)
             })
 
     }

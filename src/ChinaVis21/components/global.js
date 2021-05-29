@@ -131,10 +131,49 @@ function IsPC() {
     return flag;
 }
 
-function scrollTo(page, callback){
+function scrollTo(page){
     if(page !== Page) {
-        widthDiv.animate({top: `${-pageHeight * page}px`}, 1000, ()=>{
-            callback&&callback()
+        let offset = `${-pageHeight * page}px`
+        let callbackTo
+        let callbackFrom
+        if (page == 0){
+            opt_mainVis.stage2()
+        } else if (page == 1){
+            d3.select('#cityBridgeSvg').transition().duration(1000)
+                .attr('transform', 'translate(0 1060)');
+            opt_sakura.startAnima()
+            callbackTo = () => {
+                stage_ss = 1
+            }
+        } else if (page == 2){
+            callbackTo = ()=>{
+                if(stage_ff === 0) {
+                    opt_fire.stage1()
+                } else if(stage_ff === 3) {
+                    opt_fire.stage2()
+                }
+            }
+        } else if (page == 3){
+            callbackTo = ()=>{
+                if(stage_ll == 0){
+                    opt_lastKM.stage1()
+                }
+            }
+        }
+        if (Page == 0){
+
+        } else if (Page == 1){
+            stage_ss = 0
+            callbackFrom = () => opt_sakura.stopAnima()
+        } else if (Page == 2){
+            callbackFrom = ()=>{
+                stage_ff = 3
+            }
+        } else if (Page == 3){
+        }
+        widthDiv.animate({top: offset}, 1000, ()=>{
+            callbackTo&&callbackTo()
+            callbackFrom&&callbackFrom()
         })
         Page = page
     }

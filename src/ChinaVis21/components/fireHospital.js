@@ -304,6 +304,71 @@ $(document).ready(function () {
         console.log('stage_ff_1_enter')
         stage_ff = 1
         let particles = []
+        let sakura_petal
+
+        function enterStage2(){
+            //add building
+            let base = buildingGroup.append('g').attr('opacity', 0)
+            data_hospital.forEach(data=>{
+                let building = new Building(data)
+                building.height = 0
+
+                base.append('polygon')
+                    .attr('points', building.getTopD())
+                    .attr('fill', `url(#l${199})`)
+                    .attr('opacity', 0.3)
+                    .on('click', (e)=>{
+                        e.cancelBubble = true
+                        clickBuilding(data.name - 1)
+                    })
+
+                let g2 = buildingGroup.append('g')
+                buildings.push({height:0, structure:[]})
+                let bb = buildings[buildings.length - 1].structure
+                for (let i = 0; i < 200; i++) {
+                    building.height += 1 / 2
+                    bb.push(g2.append('polygon')
+                        .attr('points', building.getTopD())
+                        .attr('fill', 'none')
+                        .attr('visibility', 'hidden')
+                        .attr('stroke', `url(#l${i})`)
+                        .on('click', (e)=>{
+                            e.cancelBubble = true
+                            clickBuilding(data.name - 1)
+                        }))
+
+                    if(i < opt_fire.minHeight) {
+                        bb[bb.length - 1].transition().duration(2000).delay(2000)
+                            .attr('visibility', 'visible')
+                    }
+                }
+            })
+
+            base.transition().duration(2000)
+                .attr('opacity', 1)
+                .on('end', ()=>{
+                    stage_2()
+                })
+            sakura_petal&&sakura_petal.transition().duration(1000)
+                .attr('opacity', 0)
+                .on('end', function(){
+                    d3.select(this).remove()
+                })
+            d3.select('#fireIllustration').transition().duration(1000)
+                .attr('opacity', 1)
+            typeDots.forEach(dot=>{
+                dot.transition().duration(1000)
+                    .attr('opacity', 1)
+            })
+            sakura_petal = null
+            console.log('stage_ff_1_exit')
+        }
+
+        if(opt_fire.debug) {
+            enterStage2()
+            return
+        }
+
         for (let i = 0; i < opt_fire.sakuraAmount; i++) {
             let ran = Math.random() * data_clean.hospital_sum
             for (let j = 0; j < data_clean.hospital_area.length; j++) {
@@ -320,7 +385,7 @@ $(document).ready(function () {
         ip1 = d3.interpolateRgb(opt_sakura.startColor, opt_sakura.middleColor)
         ip2 = d3.interpolateRgb(opt_sakura.middleColor, opt_sakura.endColor)
 
-        let sakura_petal = fireSvg.select('#building').selectAll()
+        sakura_petal = fireSvg.select('#building').selectAll()
             .data(particles)
             .join('path')
             .attr('d', d=>opt_sakura.sakura_svg[Math.floor(Math.random()*12)])
@@ -330,7 +395,6 @@ $(document).ready(function () {
                 return `translate(${d.x},${d.y})scale(${d.scale}, ${d.scale})`
             });
 
-
         function animloop() {
             let out = 0
             sakura_petal
@@ -339,68 +403,15 @@ $(document).ready(function () {
                     return `translate(${d.x},${d.y})scale(${d.scale}, ${d.scale})`
                 })
                 .attr('opacity', d=>d.opacity)
-            if (out === particles.length || opt_fire.debug) {
-                //add building
-                let base = buildingGroup.append('g').attr('opacity', 0)
-                data_hospital.forEach(data=>{
-                    let building = new Building(data)
-                    building.height = 0
-
-                    base.append('polygon')
-                        .attr('points', building.getTopD())
-                        .attr('fill', `url(#l${199})`)
-                        .attr('opacity', 0.3)
-                        .on('click', (e)=>{
-                            e.cancelBubble = true
-                            clickBuilding(data.name - 1)
-                        })
-
-                    let g2 = buildingGroup.append('g')
-                    buildings.push({height:0, structure:[]})
-                    let bb = buildings[buildings.length - 1].structure
-                    for (let i = 0; i < 200; i++) {
-                        building.height += 1 / 2
-                        bb.push(g2.append('polygon')
-                            .attr('points', building.getTopD())
-                            .attr('fill', 'none')
-                            .attr('visibility', 'hidden')
-                            .attr('stroke', `url(#l${i})`)
-                            .on('click', (e)=>{
-                                e.cancelBubble = true
-                                clickBuilding(data.name - 1)
-                            }))
-
-                        if(i < opt_fire.minHeight) {
-                            bb[bb.length - 1].transition().duration(2000).delay(2000)
-                                .attr('visibility', 'visible')
-                        }
-                    }
-                })
-
-                base.transition().duration(2000)
-                    .attr('opacity', 1)
-                    .on('end', ()=>{
-                        stage_2()
-                    })
-                sakura_petal.transition().duration(1000)
-                    .attr('opacity', 0)
-                    .on('end', function(){
-                        d3.select(this).remove()
-                    })
-                d3.select('#fireIllustration').transition().duration(1000)
-                    .attr('opacity', 1)
-                typeDots.forEach(dot=>{
-                    dot.transition().duration(1000)
-                        .attr('opacity', 1)
-                })
-                sakura_petal = null
-                console.log('stage_ff_1_exit')
+            if (out === particles.length) {
+                enterStage2()
                 return
             }
             window.requestAnimationFrame(animloop);
         }
         animloop()
     }
+    opt_fire.stage1 = stage_1
 
     let progress = 0
     let stage_now = 0
@@ -540,21 +551,16 @@ $(document).ready(function () {
         }
         animaloop()
     }
+    opt_fire.stage2 = stage_2
 
     function stage_3(isDown) {
         stage_ff = 100
         firstOut = false
         opt_hospitalRenderer.stopAnima()
         if(isDown) {
-            scrollTo(3, ()=>{
-                stage_ff = 3
-            })
+            scrollTo(3)
         } else {
-            opt_sakura.startAnima()
-            scrollTo(1, ()=>{
-                stage_ss = 1
-                stage_ff = 3
-            })
+            scrollTo(1)
         }
     }
 

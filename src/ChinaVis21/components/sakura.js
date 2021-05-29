@@ -21,7 +21,7 @@ opt_sakura = {
 let stage_ss = 0
 $(document).ready(function () {
     let height = 980
-    let dur = 10
+    let dur = 20
     let min_scroll = - 5 * dur
     let max_scroll = 710
     let scroll_sakura = min_scroll
@@ -39,11 +39,8 @@ $(document).ready(function () {
                         scroll_sakura += dur
                         opt_cityBridge.showBarDots(scroll_sakura + 100)
                     }
-                } else if (tmp === max_scroll){
-                    stage_ss = 0
-                    scrollTo(2, ()=>{
-                        opt_sakura.stopAnima()
-                    })
+                } else if (tmp >= max_scroll){
+                    scrollTo(2)
                 }
             } else {
                 tmp = scroll_sakura - dur
@@ -54,12 +51,8 @@ $(document).ready(function () {
                         scroll_sakura -= dur
                         opt_cityBridge.showBarDots(scroll_sakura + 100)
                     }
-                } else if(tmp === min_scroll) {
-                    stage_ss = 0
-                    opt_mainVis.stage2()
-                    scrollTo(0,()=>{
-                        opt_sakura.stopAnima()
-                    })
+                } else if(tmp <= min_scroll) {
+                    scrollTo(0)
                 }
             }
         }
