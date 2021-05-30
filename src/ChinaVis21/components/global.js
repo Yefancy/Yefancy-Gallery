@@ -7,14 +7,6 @@ Array.prototype.remove = function(val) {
     return this
 };
 
-// function registerWatcher(element, f, threshold) {
-//     new IntersectionObserver((entries) => {
-//         f(entries)
-//     }, {
-//         threshold: (threshold == null ? [0] : threshold),
-//     }).observe(element)
-// }
-
 //data clean
 
 data_clean={
@@ -40,60 +32,21 @@ data_hospital_area.forEach(area=>{
     data_clean.hospital_area.push({sum:data_clean.hospital_sum, area:area})
 })
 
-// left: 37, up: 38, right: 39, down: 40,
-// spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
-var keys = {37: 1, 38: 1, 39: 1, 40: 1};
-
-function preventDefault(e) {
-    e.preventDefault();
-}
-
-function preventDefaultForScrollKeys(e) {
-    if (keys[e.keyCode]) {
-        preventDefault(e);
-        return false;
-    }
-}
-
-// modern Chrome requires { passive: false } when adding event
-var supportsPassive = false;
-try {
-    window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
-        get: function () { supportsPassive = true; }
-    }));
-} catch(e) {}
-
-var wheelOpt = supportsPassive ? { passive: false } : false;
 var wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
 
-// call this to Disable
-function disableScroll() {
-    console.log('diable scroll')
-    window.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
-    window.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
-    window.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
-    window.addEventListener('keydown', preventDefaultForScrollKeys, false);
-}; disableScroll();
-
-// call this to Enable
-function enableScroll() {
-    console.log('enable scroll')
-    window.removeEventListener('DOMMouseScroll', preventDefault, false);
-    window.removeEventListener(wheelEvent, preventDefault, wheelOpt);
-    window.removeEventListener('touchmove', preventDefault, wheelOpt);
-    window.removeEventListener('keydown', preventDefaultForScrollKeys, false);
-}
 
 let Page = 0
 let widthDiv
 let maskDiv
 let flowPin
+let videoDiv
 let pageHeight = window.innerHeight
 
 $(document).ready(function () {
     widthDiv = $('#widthDiv');
     maskDiv = $('#maskDiv');
     flowPin = $('#flowPin');
+    videoDiv = $('#videoDiv');
     $('#maskDiv').bind({
         click: ()=>lockOrientation('landscape'),
         touchstart: ()=>lockOrientation('landscape')
@@ -113,9 +66,11 @@ $(document).ready(function () {
         maskDiv.css('top', `${pageHeight}px`)
         let per = pageHeight / 1080
         flowPin.css('transform', `translate(${(width - per * 1920) / 2}px, 0px)scale(${per})`)
+        videoDiv.css('height', `${pageHeight}px`)
     }
     window.addEventListener("resize", resize)
     resize()
+    // video.get(0).muted = false
 })
 
 function IsPC() {
@@ -166,6 +121,7 @@ function scrollTo(page){
             stage_ss = 0
             callbackFrom = () => opt_sakura.stopAnima()
         } else if (Page == 2){
+            opt_hospitalRenderer.stopAnima()
             callbackFrom = ()=>{
                 stage_ff = 3
             }

@@ -2,12 +2,47 @@ body::-webkit-scrollbar {
     display: none;
 }
 
-/*@media only screen and (orientation:portrait){*/
-/*    body {*/
-/*        height: 100vw;*/
-/*        transform: rotate(90deg);*/
-/*    }*/
-/*}*/
+input#un-mute {
+    display: none;
+}
+
+.unmute img {
+    display: none;
+}
+
+.mute-button {
+    position: absolute;
+    right: 5%;
+    top: 5%;
+    width: 40px;
+}
+
+input#un-mute:checked ~ .unmute img {
+    display: initial;
+}
+
+input#un-mute:checked ~ .mute img {
+    display: none;
+}
+
+.next-page{
+    position: absolute;
+    width: 200px;
+    padding: 4px;
+    border-radius: 10px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    font-weight: 900;
+    font-size: 125%;
+    font-family: "Old Newspapers Sung", serif;
+    bottom: 1%;
+    right: 0;
+    left: 0;
+    margin: auto;
+    background-color: #ffffffeb;
+    color: black;
+}
 
 @font-face {
     font-family: 'Old Newspapers Sung';

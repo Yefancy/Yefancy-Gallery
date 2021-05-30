@@ -556,7 +556,6 @@ $(document).ready(function () {
     function stage_3(isDown) {
         stage_ff = 100
         firstOut = false
-        opt_hospitalRenderer.stopAnima()
         if(isDown) {
             scrollTo(3)
         } else {
