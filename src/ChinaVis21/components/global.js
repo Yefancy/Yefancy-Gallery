@@ -96,7 +96,7 @@ $(document).ready(function () {
     flowPin = $('#flowPin');
     $('#maskDiv').bind({
         click: ()=>lockOrientation('landscape'),
-        mousemove: ()=>lockOrientation('landscape')
+        touchstart: ()=>lockOrientation('landscape')
     });
     function resize() {
         let width = window.innerWidth;
