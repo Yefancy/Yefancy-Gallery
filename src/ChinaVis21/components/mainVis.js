@@ -740,7 +740,7 @@ $(document).ready(function () {
 
     }
 
-    function scrollHandler(event, isDown){
+    registerScroll('#mainVis', (event, isDown) => {
         if (isDown) {
             if (stage_dd === 0) {
                 d3.select('#mainVisBG').transition().duration(2000).delay(1000).attr('opacity', 0)
@@ -786,33 +786,7 @@ $(document).ready(function () {
             progress_pin.attr('transform', `translate(0 ${offY})`)
             updateBarChart(dragDate)
         }
-    }
-
-    let startPos
-    $('#mainVis').bind(wheelEvent, function(event){
-        let e = event.originalEvent
-        if(e.deltaY > 0){
-            scrollHandler(event, true)
-        } else if(e.deltaY < 0) {
-            scrollHandler(event, false)
-        }
-    }).bind('touchstart', function(event){
-        let touch = event.originalEvent.targetTouches[0]
-        startPos = {x:touch.pageX, y:touch.pageY};
-    }).bind('touchmove', function(event){
-        let touch = event.originalEvent.targetTouches[0]
-        let nowPos = {x:touch.pageX, y:touch.pageY};
-        if(Math.abs(nowPos.y - startPos.y) > 20) {
-            if(nowPos.y < startPos.y){
-                scrollHandler(event, true)
-            } else if(nowPos.y > startPos.y) {
-                scrollHandler(event, false)
-            }
-            startPos = nowPos
-        }
-    })
-    //     .bind('touchend', function(event){
-    // })
+    }, 20)
 
 })
 

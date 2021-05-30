@@ -86,9 +86,16 @@ function IsPC() {
     return flag;
 }
 
-function scrollTo(page){
+function scrollTo(page, speed, callback){
     if(page !== Page) {
         let offset = `${-pageHeight * page}px`
+        if(speed) {
+            widthDiv.animate({top: offset}, speed, ()=>{
+                callback&&callback()
+            })
+            Page = page
+            return
+        }
         let callbackTo
         let callbackFrom
         if (page == 0){
@@ -114,6 +121,11 @@ function scrollTo(page){
                     opt_lastKM.stage1()
                 }
             }
+        } else if (page == 4){
+            callbackTo = ()=>{
+                stage_ig = 0
+                opt_infoGraphic.handleProgress()
+            }
         }
         if (Page == 0){
 
@@ -126,6 +138,8 @@ function scrollTo(page){
                 stage_ff = 3
             }
         } else if (Page == 3){
+        } else if (Page == 4){
+            stage_ig = -1
         }
         widthDiv.animate({top: offset}, 1000, ()=>{
             callbackTo&&callbackTo()
@@ -150,6 +164,32 @@ function lockOrientation (orientation) {
 
     // Then lock orientation
     screen.orientation.lock(orientation);
+}
+
+function registerScroll(selected, scrollHandler, sensitive){
+    let startPos
+    $(selected).bind(wheelEvent, function(event){
+        let e = event.originalEvent
+        if(e.deltaY > 0){
+            scrollHandler(event, true)
+        } else if(e.deltaY < 0) {
+            scrollHandler(event, false)
+        }
+    }).bind('touchstart', function(event){
+        let touch = event.originalEvent.targetTouches[0]
+        startPos = {x:touch.pageX, y:touch.pageY};
+    }).bind('touchmove', function(event){
+        let touch = event.originalEvent.targetTouches[0]
+        let nowPos = {x:touch.pageX, y:touch.pageY};
+        if(Math.abs(nowPos.y - startPos.y) > sensitive) {
+            if(nowPos.y < startPos.y){
+                scrollHandler(event, true)
+            } else if(nowPos.y > startPos.y) {
+                scrollHandler(event, false)
+            }
+            startPos = nowPos
+        }
+    })
 }
 
 

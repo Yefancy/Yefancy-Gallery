@@ -224,12 +224,13 @@ $(document).ready(function () {
         stage_ll = 2
     }
 
-    function scrollHandler(event, isDown){
+    registerScroll('#lastKMSvg', (event, isDown) => {
         if (stage_ll === 0 && isDown > 0) {
             stage_1()
         } else if(stage_ll === 2) {
             if(isDown){
                 if(!pushDot()) {
+                    scrollTo(4)
                 }
             } else {
                 if(!pullDot()) {
@@ -237,31 +238,7 @@ $(document).ready(function () {
                 }
             }
         }
-    }
-
-    let startPos
-    $('#lastKMSvg').bind(wheelEvent, function(event){
-        let e = event.originalEvent
-        if(e.deltaY > 0){
-            scrollHandler(event, true)
-        } else if(e.deltaY < 0) {
-            scrollHandler(event, false)
-        }
-    }).bind('touchstart', function(event){
-        let touch = event.originalEvent.targetTouches[0]
-        startPos = {x:touch.pageX, y:touch.pageY};
-    }).bind('touchmove', function(event){
-        let touch = event.originalEvent.targetTouches[0]
-        let nowPos = {x:touch.pageX, y:touch.pageY};
-        if(Math.abs(nowPos.y - startPos.y) > 50) {
-            if(nowPos.y < startPos.y){
-                scrollHandler(event, true)
-            } else if(nowPos.y > startPos.y) {
-                scrollHandler(event, false)
-            }
-            startPos = nowPos
-        }
-    })
+    }, 50)
 })
 
 

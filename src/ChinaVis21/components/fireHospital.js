@@ -563,7 +563,7 @@ $(document).ready(function () {
         }
     }
 
-    function scrollHandler(event, isDown){
+    registerScroll('#fireSvg', (event, isDown) => {
         if(stage_ff == 0 && isDown) {
             stage_1()
         } else if(stage_ff == 2) {
@@ -601,29 +601,5 @@ $(document).ready(function () {
         } else if(stage_ff == 3) {
             stage_2()
         }
-    }
-
-    let startPos
-    $('#fireSvg').bind(wheelEvent, function(event){
-        let e = event.originalEvent
-        if(e.deltaY > 0){
-            scrollHandler(event, true)
-        } else if(e.deltaY < 0) {
-            scrollHandler(event, false)
-        }
-    }).bind('touchstart', function(event){
-        let touch = event.originalEvent.targetTouches[0]
-        startPos = {x:touch.pageX, y:touch.pageY};
-    }).bind('touchmove', function(event){
-        let touch = event.originalEvent.targetTouches[0]
-        let nowPos = {x:touch.pageX, y:touch.pageY};
-        if(Math.abs(nowPos.y - startPos.y) > 20) {
-            if(nowPos.y < startPos.y){
-                scrollHandler(event, true)
-            } else if(nowPos.y > startPos.y) {
-                scrollHandler(event, false)
-            }
-            startPos = nowPos
-        }
-    })
+    }, 20)
 })
