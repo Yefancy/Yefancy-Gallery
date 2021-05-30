@@ -137,8 +137,8 @@ $(document).ready(function () {
                     infoGraphic.select('#livingSupplies').transition().duration(500).delay(200).attr('opacity', 1)
                     infoGraphic.select('#productionSupplies').transition().duration(500).delay(300).attr('opacity', 1)
                         .on('end',()=>{ // ferry
-                            infoGraphic.select('#supplies2').transition().duration(500).delay(1500).attr('opacity', 0)
-                            infoGraphic.select('#supplies4').transition().duration(500).delay(2000).attr('opacity', 1)
+                            infoGraphic.select('#supplies2').transition().duration(500).delay(1000).attr('opacity', 0)
+                            infoGraphic.select('#supplies4').transition().duration(500).delay(1500).attr('opacity', 1)
                                 .on('end',()=>{ // ferry anima
                                     ferryAnima() // 1000ms
                                     infoGraphic.select('#supplies5').transition().duration(500).delay(1200).attr('opacity', 1)
@@ -178,7 +178,7 @@ $(document).ready(function () {
                 infoGraphic.select('#text6').transition().duration(1000).delay(3000).attr('opacity', 1).attr('transform', 'translate(0 0)')
                     .on('end', ()=>{
                         progress = 4
-                        stage_ig = 30
+                        stage_ig = maxS
                     })
             })
         }
@@ -204,11 +204,11 @@ $(document).ready(function () {
             if(tmp >= 0 && tmp <= maxS) {
                 stage_ig = tmp
                 // console.log(4 + stage_ig * dur);
-                scrollTo(4 + stage_ig * dur, 50)
+                scrollTo(4 + stage_ig * dur, 100, false, 'linear')
             } else if (tmp < 0) {
                 scrollTo(3)
             }
-        } else {
+        } else if(progress !== -1) {
             handleProgress()
         }
     }, 20)

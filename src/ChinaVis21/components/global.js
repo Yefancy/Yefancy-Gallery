@@ -86,13 +86,19 @@ function IsPC() {
     return flag;
 }
 
-function scrollTo(page, speed, callback){
+function scrollTo(page, speed, callback, ease){
     if(page !== Page) {
         let offset = `${-pageHeight * page}px`
         if(speed) {
-            widthDiv.animate({top: offset}, speed, ()=>{
-                callback&&callback()
-            })
+            if(ease) {
+                widthDiv.animate({top: offset}, speed, ease,()=>{
+                    callback&&callback()
+                })
+            } else {
+                widthDiv.animate({top: offset}, speed,()=>{
+                    callback&&callback()
+                })
+            }
             Page = page
             return
         }
