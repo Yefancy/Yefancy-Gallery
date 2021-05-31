@@ -1,31 +1,5 @@
 $(document).ready(function () {
-    let video = $('video').get(0)
-    let button = $('#videoDiv button')
-    video.onclick = ()=>{
-        button.stop()
-        if(button.css('display') === 'none') {
-            button.fadeIn('slow', ()=>{
-                setTimeout(()=>{
-                    if(button.css('display') !== 'none') {
-                        button.fadeOut('slow')
-                    }
-                }, 3000)
-            })
-        } else {
-            button.fadeOut('slow')
-        }
-    }
-    video.ontimeupdate = ()=> {
-        if (video.duration - video.currentTime < 3 && button.css('display') === 'none') {
-            button.fadeIn('slow', () => {
-                setTimeout(() => {
-                    if (button.css('display') !== 'none') {
-                        button.fadeOut('slow')
-                    }
-                }, 4000)
-            })
-        }
-    }
+    showGuideNP(true,null,()=>{videoExit()})
 })
 
 function videoExit(){
@@ -41,9 +15,4 @@ function videoEnter(){
     videoDiv.animate({top: '0%'},1500,()=>{
         video.play()
     })
-}
-
-function videoMuted(){
-    let video = $('video').get(0)
-    video.muted = !video.muted
 }

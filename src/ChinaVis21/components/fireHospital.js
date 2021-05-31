@@ -422,10 +422,12 @@ $(document).ready(function () {
     opt_fire.stage1 = stage_1
 
     let progress = 0
+    let p_dur = 15 * 8
     let stage_now = 0
     let firstOut = true
 
-    function checkIcons(s, e, is, np) {
+    function checkIcons(e, is, np) {
+        let s = e - 1
         if (np >= e && progress <= s) {
             is.forEach(i=>{
                 icons[i].transition().duration(1500).attr('opacity', 1)
@@ -493,6 +495,7 @@ $(document).ready(function () {
         return true
     }
 
+    let pause = 0
     function stage_2() {
         console.log('stage_ff_2_enter')
         stage_ff = 2
@@ -500,8 +503,29 @@ $(document).ready(function () {
 
         function animaloop(){
             if(stage_ff == 2){
-                let stage = Math.floor(progress / 8)
-                let per = progress % 8 / 7
+                if(pause === 0) {
+                    if(progress + 0.1 <= p_dur * 8 -1) {
+                        let np = progress + 1
+                        if(checkIcons(p_dur / 2,[0,1,2,3,12], np)){}
+                        else if(checkIcons(p_dur,[4], np)){}
+                        else if(checkIcons(2 * p_dur,[5], np)){}
+                        else if(checkIcons(3 * p_dur,[6], np)){}
+                        else if(checkIcons(3 * p_dur + p_dur / 2,[13], np)){}
+                        else if(checkIcons(4 * p_dur,[7], np)){}
+                        else if(checkIcons(4 * p_dur + p_dur / 2,[14], np)){}
+                        else if(checkIcons(5 * p_dur,[8], np)){}
+                        else if(checkIcons(6 * p_dur,[9], np)){}
+                        else if(checkIcons(7 * p_dur,[10], np)){}
+                        else if(checkIcons(8 * p_dur - 1,[11], np)){}
+                        progress = np
+                    }
+                } else {
+                    pause--
+                }
+
+
+                let stage = Math.floor(progress / p_dur)
+                let per = progress % p_dur / (p_dur - 1)
 
                 // render lines
                 let stage_now_tmp = stage_now
@@ -509,7 +533,7 @@ $(document).ready(function () {
                     let start = i == -1 ? 0 : (8 - opt_fire.lineSize[i])
                     // render building
                     if (i != -1) {
-                        let height = Math.max(opt_fire.minHeight + Math.floor(((progress) - (start * 8)) / (64 - (start * 8)) * 170), opt_fire.minHeight)
+                        let height = Math.max(opt_fire.minHeight + Math.floor(((progress) - (start * p_dur)) / (p_dur * 8 - (start * p_dur)) * 200), opt_fire.minHeight)
                         let building = buildings[i]
                         if (i == selected_building) {
                             let modify_height = building.height + selected_vec
@@ -570,26 +594,29 @@ $(document).ready(function () {
         }
     }
 
-    let nextPage = 0
     registerScroll('#fireSvg', (event, isDown) => {
         if(stage_ff == 0 && isDown) {
             stage_1()
         } else if(stage_ff == 2) {
-            let np = progress + (isDown ? 1 : -1)
-            if(np >= 0 && np <= 63) {
-                if(checkIcons(3,4,[0,1,2,3,12], np)){}
-                else if(checkIcons(7,8,[4], np)){}
-                else if(checkIcons(15,16,[5], np)){}
-                else if(checkIcons(23,24,[6], np)){}
-                else if(checkIcons(27,28,[13], np)){}
-                else if(checkIcons(31,32,[7], np)){}
-                else if(checkIcons(35,36,[14], np)){}
-                else if(checkIcons(39,40,[8], np)){}
-                else if(checkIcons(47,48,[9], np)){}
-                else if(checkIcons(55,56,[10], np)){}
-                else if(checkIcons(62,63,[11], np)){}
+            pause = 90
+            let np = progress + (isDown ? 15 : -15)
+            if (np < 0 || np > p_dur * 8 -1) {
+                np = progress + (isDown ? 1 : -1)
+            }
+            if(np >= 0 && np <= p_dur * 8 -1) {
+                if(checkIcons(p_dur / 2,[0,1,2,3,12], np)){}
+                else if(checkIcons(p_dur,[4], np)){}
+                else if(checkIcons(2 * p_dur,[5], np)){}
+                else if(checkIcons(3 * p_dur,[6], np)){}
+                else if(checkIcons(3 * p_dur + p_dur / 2,[13], np)){}
+                else if(checkIcons(4 * p_dur,[7], np)){}
+                else if(checkIcons(4 * p_dur + p_dur / 2,[14], np)){}
+                else if(checkIcons(5 * p_dur,[8], np)){}
+                else if(checkIcons(6 * p_dur,[9], np)){}
+                else if(checkIcons(7 * p_dur,[10], np)){}
+                else if(checkIcons(8 * p_dur - 1,[11], np)){}
                 progress = np
-            } else if(isDown && np > 63) {
+            } else if(isDown && np > p_dur * 8 -1) {
                 console.log('stage_ff_2_exit')
                 let fireCar = d3.select('#fireCar')
                 if(firstOut && parseFloat(fireCar.attr('opacity')) == 0) {
@@ -601,29 +628,13 @@ $(document).ready(function () {
                                 .on('end',()=>{firstOut = false})
                         })
                 } else if(!firstOut) {
-                    if(nextPage === 0) {
-                        nextPage = 1;showGuideNP(true,null,()=>{stage_3(isDown); nextPage = 0;})
-                    } else if(nextPage === 2) {
-                        nextPage = 0;hideGuideNP();stage_3(isDown)
-
-                    }
-                    return
+                    showGuideS(true, (e)=>e&&stage_3(isDown),940)
                 }
             } else if(!isDown && np < 0) {
-                if(nextPage === 0) {
-                    nextPage = 1;showGuideNP(false,null,()=>{stage_3(isDown); nextPage = 0;})
-                } else if(nextPage === 2) {
-                    nextPage = 0;hideGuideNP();stage_3(isDown)
-
-                }
-                return
+                showGuideS(false, (e)=>!e&&stage_3(isDown))
             }
         } else if(stage_ff == 3) {
             stage_2()
-        }
-        if(nextPage !== 0) {
-            nextPage = 0
-            hideGuideNP()
         }
     }, 20)
 })

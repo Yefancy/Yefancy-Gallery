@@ -1,11 +1,3 @@
-function addCommentPin(x, y, comment) {
-    showPin(x, y,2, {0:comment.name, 1:comment.time, 2:comment.location, 3:comment.comment})
-}
-
-function removeCommentPin() {
-    hidePin(2)
-}
-
 function showPin(x, y, index, content, func) {
     let pin = $(`#flowPin_${index}`)
     let action = ()=>{
@@ -15,9 +7,7 @@ function showPin(x, y, index, content, func) {
                 $(`#flowPin_${index}_${key}`).text(content[key])
             })
         }
-        if(func) {
-            func(pin)
-        }
+        func&&func(pin)
         pin.animate({opacity: 1})
     }
     if (pin.css('opacity') === 1 || pin.css('opacity') === '1') {
@@ -64,7 +54,6 @@ function showGuideNP(isDown, showCallback, clickCallback, isBlue) {
         .transition().duration(1000)
         .attr('opacity', 1)
         .on('end', ()=>{
-            showCallback&&showCallback();
             let guide = guide_focus;
             (function anima(){
                 if(guide === guide_focus) {
@@ -76,7 +65,8 @@ function showGuideNP(isDown, showCallback, clickCallback, isBlue) {
                                 .on('end', ()=>anima())
                         })
                 }
-            })()
+            })();
+            showCallback&&showCallback();
         })
     guide_focus.on('click', ()=>{
         clickCallback&&clickCallback()
@@ -97,3 +87,99 @@ function hideGuideNP() {
             })
     }
 }
+
+let guideS
+let guideS_Callback
+function showGuideS(isDown, callback, y){
+    let guide = d3.select('#guide_scroll')
+    if(guide.style('display') !== 'none') return
+    let icon = guide.select('g')
+    let Y = y? y : 0
+    guideS_Callback = callback
+    guide.select('text').text(isDown? '下滚/滑 换页':'上滚/滑 换页')
+    guide.style('display', null).style('top', `${Y}px`)
+        .transition().duration(1000)
+        .attr('opacity', 1)
+        .on('end', ()=>{
+            guideS = guide;
+            (function anima(){
+                if (guideS === null) return
+                icon.transition().duration(1000).ease(d3.easeCubicIn)
+                    .attr('transform', `translate(0 ${isDown? 20:-20})`)
+                    .on('end', ()=>{
+                        icon.transition().duration(1000).ease(d3.easeCubicOut)
+                            .attr('transform', `translate(0 0)`)
+                            .on('end', ()=>anima())
+                    })
+            })()
+        })
+}
+
+
+
+function changeNavbar(index) {
+    let nb = d3.select('#navbar')
+    nb.selectAll('line')
+        .each(function(d){
+            let line = d3.select(this)
+            line.attr('stroke', index === 4 ? '#13344F':'white')
+                .transition().duration(1000)
+                .attr('x2', (d === index || d - 1 === index)? 80:40)
+        })
+
+    nb.selectAll('text')
+        .each(function(d, i){
+            let text = d3.select(this)
+            text.attr('fill', index === 4 ? '#13344F':'white')
+                .transition().duration(1000)
+                .attr('font-size', (i === index)? 24:15)
+                .attr('opacity', (i === index)? 1:0.5)
+        })
+}
+
+$(document).ready(function () {
+    registerScroll(document, (e,isDown)=>{
+        if(guideS != null) {
+            let guide = guideS
+            guideS = null
+            guideS_Callback&&guideS_Callback(isDown)
+            guideS_Callback = null
+            guide.transition().duration(1000)
+                .attr('opacity', 0)
+                .on('end', ()=>{
+                    guide.style('display', 'none')
+                })
+        }
+    }, 20)
+
+    //navbar
+    let data = ['疫 · 断', '祈 · 愿', '筑 · 定', '众 · 志', '桥 · 连']
+    let nb = d3.select('#navbar')
+    nb.selectAll()
+        .data([0,1,2,3,4,5])
+        .join('line')
+        .attr('x1', 0)
+        .attr('y1', d=>5 + d*70)
+        .attr('x2', 40)
+        .attr('y2', d=>5 + d*70)
+        .attr('stroke', 'white')
+        .attr('stroke-width', 2)
+
+    nb.append('g')
+        .attr('dominant-baseline', 'middle')
+        .attr('font-family', 'Regular')
+        .selectAll()
+        .data([0,1,2,3,4])
+        .join('text')
+        .attr('fill', 'white')
+        .attr('x', 7)
+        .attr('y', (d) => 40 + d * 70)
+        .attr('opacity', 0.5)
+        .attr('font-size', 15)
+        .text(d=>data[d])
+        .on('click', (e, d)=>{
+            scrollTo(d)
+        })
+
+    changeNavbar(0)
+})

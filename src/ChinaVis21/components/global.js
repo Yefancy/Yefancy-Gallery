@@ -134,8 +134,11 @@ function scrollTo(page, speed, callback, ease){
             }
         }
         if (Page == 0){
-
+            opt_mainVis.stage5()
         } else if (Page == 1){
+            scroll_sakura = 0
+            opt_cityBridge.showBarDots(-100)
+            opt_sakura.setFallY(0)
             stage_ss = 0
             callbackFrom = () => opt_sakura.stopAnima()
         } else if (Page == 2){
@@ -147,6 +150,7 @@ function scrollTo(page, speed, callback, ease){
         } else if (Page == 4){
             stage_ig = -1
         }
+        changeNavbar(page)
         widthDiv.animate({top: offset}, 1000, ()=>{
             callbackTo&&callbackTo()
             callbackFrom&&callbackFrom()

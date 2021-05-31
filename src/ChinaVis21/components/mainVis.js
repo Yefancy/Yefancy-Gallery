@@ -31,6 +31,8 @@ $(document).ready(function () {
     let roadSvg = d3.select(opt_mainVis.road)
     let wordSvg = roadSvg.select('#word')
     let progressSvg = d3.select('#progress')
+    let sakuraTree = d3.select('#sakuraTree')
+
 
     //////////////////////////////river anima
     let r1 = d3.select('#river_1')
@@ -142,6 +144,30 @@ $(document).ready(function () {
                 return `translate(${d.x},${d.y})scale(${d.scale}, ${d.scale})`
             });
 
+        let n5 = sakuraTree.select('#N5');
+
+        (function anima_n5(){
+            if(sakura_left == null) return
+            n5.transition().duration(4000).delay(500)
+                .attr('transform', 'rotate(5)')
+                .on('end', ()=>{
+                    n5.transition().duration(4000).delay(500)
+                        .attr('transform', 'rotate(0)')
+                        .on('end', ()=>anima_n5())
+                })
+        })();
+
+        let n2 = sakuraTree.select('#N2');
+        (function anima_n2(){
+            if(sakura_left == null) return
+            n2.transition().duration(3000)
+                .attr('transform', 'rotate(1)')
+                .on('end', ()=>{
+                    n2.transition().duration(3000)
+                        .attr('transform', 'rotate(-1)')
+                        .on('end', ()=>anima_n2())
+                })
+        })();
 
         function animloop() {
             if(sakura_left == null) return
@@ -258,11 +284,28 @@ $(document).ready(function () {
         }
     }
 
+    let cards = []
+    for (let i = 0; i < 4; i++) {
+        cards.push(sakuraTree.select(`#S${i}`))
+        cards[i].on('click', ()=>{
+            changeFilter(i)
+            cards[i].select('text').transition().style('fill', '#e2004f')
+            cards.forEach(card=>{
+                if(card !== cards[i]) {
+                    card.select('text').transition().style('fill', '#212222')
+                }
+            })
+        })
+    }
+
     function stage_2(){
         let shoudDelay = (opt_mainVis.debug || stage_dd == 5)
         if (parseFloat(wordSvg.attr('opacity')) === 0){
-            mainVis.select('#mainVisBG2').transition().duration(6000).attr('opacity', 1)
             wordSvg.transition().duration(6000).attr('opacity', 1)
+
+            //navbar
+            d3.select('#navbar').transition().duration(1000)
+                .attr('opacity', 1)
 
             //wuhan sakura
             let wuhan = d3.select('#sakuraWuHan');
@@ -389,21 +432,6 @@ $(document).ready(function () {
                     })
                     rayCity()
                 })
-
-            let c_filter = mainVis.select('#c_filter')
-                .attr("display", null)
-                .attr('opacity', 0)
-            c_filter.transition().duration(1500)
-                .attr('opacity', 1)
-            let nodes = c_filter.selectAll('text').nodes()
-            for (let i = 0; i < nodes.length; i++) {
-                d3.select(nodes[i]).on('click',()=>{
-                    changeFilter(i)
-                    c_filter.select('circle').transition()
-                        .attr('cx', 787 + i * 120)
-                })
-            }
-
         }, shoudDelay? 0 : 6000)
         sakuraAnima()
         let cityDots_grad = d3.select('#cityDots_grad')
@@ -568,6 +596,7 @@ $(document).ready(function () {
                         if(stage_dd !=2) return
                         let data = getFilterData(filter, dragDate)[d.name]
                         if(data) {
+                            let index = data_city_dots.indexOf(d)
                             let content = ''
                             data.forEach(s=>{
                                 content += ' ' + s
@@ -584,8 +613,17 @@ $(document).ready(function () {
                                 data_weibo[dragDate]
                                 pin.on('mouseleave', ()=>{
                                     hidePin(1)
+                                    sakuraTree.select("#N1").transition().duration(2000)
+                                        .attr('transform',`translate(0 0)scale(1)`)
+                                    sakuraTree.select("#N4").transition().duration(2000)
+                                        .attr('transform',`translate(0 0)scale(1)`)
                                 })
                             })
+                            let dur = Math.abs(index - 16)
+                            sakuraTree.select("#N1").transition().duration(2000)
+                                .attr('transform',`translate(${dur * -1} ${dur * 2})scale(${1 - dur * 0.0025})`)
+                            sakuraTree.select("#N4").transition().duration(2000)
+                                .attr('transform',`translate(${dur * 1} ${dur * -2})scale(${1 + dur * 0.0025})`)
                         }
                     })
             } else if(d3.select(this).attr('fill') !== '#1a1b1e'){
@@ -732,13 +770,9 @@ $(document).ready(function () {
             .attr('opacity', 0)
         d3.select('#sakuraWuHan').transition().duration(1000)
             .attr('opacity', 0)
-            .on('end', function (e){
-                scrollTo(1)
-            })
-
     }
+    opt_mainVis.stage5 = stage_5
 
-    let np = 0
     registerScroll('#mainVis', (event, isDown) => {
         if (isDown) {
             if (stage_dd === 0) {
@@ -762,24 +796,12 @@ $(document).ready(function () {
             }
             if (index < 0 || index >= data_clean.weibo_date.length || data_clean.weibo_date[index] === dragDate) {
                 if (index >= data_clean.weibo_date.length) {
-                    if(np == 0) {
-                        np = 1;showGuideNP(true,null,()=>{stage_5(); np = 0;})
-                    } else if(np == 2) {
-                        np = 0;hideGuideNP();stage_5()
-                    }
-                } else if (index < 0) {
-                    if(np == 0) {
-                        np = 1;showGuideNP(false,null,()=>{videoEnter(); np = 0;})
-                    } else if(np == 2) {
-                        np = 0;hideGuideNP();videoEnter()
-                    }
+                    showGuideS(true, (e)=>e&&scrollTo(1))
                 }
+                // else if (index < 0) {
+                //     showGuideS(false, (e)=>!e&&videoEnter())
+                // }
                 return
-            }
-
-            if(np != 0) {
-                np = 0
-                hideGuideNP()
             }
 
             dragDate = data_clean.weibo_date[index]

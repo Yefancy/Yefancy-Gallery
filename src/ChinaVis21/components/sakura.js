@@ -19,20 +19,19 @@ opt_sakura = {
 };
 
 let stage_ss = 0
+let scroll_sakura
 $(document).ready(function () {
     let height = 980
     let dur = 20
     let min_scroll = - 5 * dur
     let max_scroll = 710
-    let scroll_sakura = min_scroll
+    scroll_sakura = min_scroll
 
-    let np = 0
     registerScroll('#sakuraWBDiv', (event, isDown) => {
         if(stage_ss === 1) {
             let tmp
             if(isDown) {
                 tmp = scroll_sakura + dur
-                console.log(tmp);
                 if(tmp < max_scroll) {
                     if (tmp <= 0 || tmp > height) {
                         scroll_sakura += dur
@@ -41,12 +40,7 @@ $(document).ready(function () {
                         opt_cityBridge.showBarDots(scroll_sakura + 100)
                     }
                 } else if (tmp >= max_scroll){
-                    if(np === 0) {
-                        np = 1;showGuideNP(true,null,()=>{scrollTo(2); np = 0;},true)
-                    } else if(np === 2) {
-                        np = 0;hideGuideNP();scrollTo(2)
-                    }
-                    return
+                    showGuideS(true, (e)=>e&&scrollTo(2), 680)
                 }
             } else {
                 tmp = scroll_sakura - dur
@@ -58,17 +52,8 @@ $(document).ready(function () {
                         opt_cityBridge.showBarDots(scroll_sakura + 100)
                     }
                 } else if(tmp <= min_scroll) {
-                    if(np === 0) {
-                        np = 1;showGuideNP(false,null,()=>{scrollTo(0); np = 0;},true)
-                    } else if(np === 2) {
-                        np = 0;hideGuideNP();scrollTo(0)
-                    }
-                    return
+                    showGuideS(false, (e)=>!e&&scrollTo(0), 80)
                 }
-            }
-            if(np !== 0) {
-                np = 0
-                hideGuideNP()
             }
         }
     }, 20)

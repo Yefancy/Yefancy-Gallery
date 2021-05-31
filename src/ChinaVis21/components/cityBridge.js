@@ -27,19 +27,6 @@ $(document).ready(function () {
             .attr('r', 0)
             .attr('fill', (d2, j)=>ip1(j / d.length))
             .attr('opacity', 1)
-            .on('click', function(e,d){
-                let cir = d3.select(this)
-                if(cir.attr('opacity') !== 1) {
-                    openPin = d
-                    addCommentPin(parseFloat(cir.attr('cx')), parseFloat(cir.attr('cy')), d)
-                }
-            })
-            .on('mouseleave', function(e,d){
-                if (d === openPin){
-                    removeCommentPin()
-                    openPin = null
-                }
-            })
     })
 
     opt_cityBridge.showBarDots = function(y) {

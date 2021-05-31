@@ -196,7 +196,6 @@ $(document).ready(function () {
 
     opt_infoGraphic.handleProgress = handleProgress
 
-    let np = 0
     registerScroll('#infoGraphic', (event, isDown) => {
         if(progress === 4) {
             let tmp
@@ -209,20 +208,10 @@ $(document).ready(function () {
                 stage_ig = tmp
                 scrollTo(4 + stage_ig * dur, 100, false, 'linear')
             } else if (tmp < 0) {
-                if(np === 0) {
-                    np = 1;showGuideNP(false,null,()=>{scrollTo(3); np = 0;},true)
-                } else if(np === 2) {
-                    np = 0;hideGuideNP();scrollTo(3)
-                }
-                return
+                showGuideS(false, (e)=>!e&&scrollTo(3))
             }
         } else if(progress !== -1) {
             handleProgress()
-        }
-
-        if(np !== 0) {
-            np = 0
-            hideGuideNP()
         }
 
     }, 20)

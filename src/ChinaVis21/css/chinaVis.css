@@ -2,28 +2,28 @@ body::-webkit-scrollbar {
     display: none;
 }
 
-input#un-mute {
-    display: none;
-}
+/*input#un-mute {*/
+/*    display: none;*/
+/*}*/
 
-.unmute img {
-    display: none;
-}
+/*.unmute img {*/
+/*    display: none;*/
+/*}*/
 
-.mute-button {
-    position: absolute;
-    right: 5%;
-    top: 5%;
-    width: 40px;
-}
+/*.mute-button {*/
+/*    position: absolute;*/
+/*    right: 5%;*/
+/*    top: 5%;*/
+/*    width: 40px;*/
+/*}*/
 
-input#un-mute:checked ~ .unmute img {
-    display: initial;
-}
+/*input#un-mute:checked ~ .unmute img {*/
+/*    display: initial;*/
+/*}*/
 
-input#un-mute:checked ~ .mute img {
-    display: none;
-}
+/*input#un-mute:checked ~ .mute img {*/
+/*    display: none;*/
+/*}*/
 
 .next-page{
     position: absolute;

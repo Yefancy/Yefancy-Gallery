@@ -198,7 +198,12 @@ $(document).ready(function () {
                 for (let i = 0; i < data_clean.loc_comments.length; i++) {
                     if(sum + data_clean.loc_comments[i].length > hoverObject.ci) {
                         let comment = data_clean.loc_comments[i][hoverObject.ci - sum]
-                        showPin(1920 / 2 - 220 / 2, 1080 / 2 - 536 / 2 -20, 3, {0:comment.name, 1:comment.location, 2:comment.comment})
+                        showPin(1920 / 2 - 220 / 2, 1080 / 2 - 536 / 2 -20, 3, {0:comment.name, 1:comment.location, 2:comment.comment}, ()=>{
+                            $.get("http://api.btstu.cn/sjtx/api.php",{ lx: "c1", format: "json" }, function(result){
+                                let def = d3.select('#raduisImage').attr('width', result.width).attr('height', result.height)
+                                def.select('image').attr('xlink:href', result.imgurl)
+                            });
+                        })
                         rope_index = i
                         let rope = $('#rope')
                         rope.css('display', '')
