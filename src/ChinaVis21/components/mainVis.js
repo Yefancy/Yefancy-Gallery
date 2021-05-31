@@ -7,7 +7,7 @@ opt_mainVis = {
     color_1: '#3DB6C7',
     color_2: '#3DC7AE',
     color_3: '#E2B094',
-    debug: true
+    debug: !IsPC()
 }
 
 let stage_dd = 0
@@ -176,7 +176,6 @@ $(document).ready(function () {
     let progress_bar_chart = progressSvg.select('#progressBarChart').selectAll('rect')
     let filter = 0 // 0-all 1-m 2-l 3-p
     let dragDate = null
-    let jumpPage = 3
 
     function updateBarChart(dragDate, callback){
         let op = 0.4
@@ -356,7 +355,6 @@ $(document).ready(function () {
         console.log('stage_dd_2_enter')
 
         setTimeout(()=>{
-            jumpPage = 5
             progress_pin.call(d3.drag()
                 .on('drag', function(e){
                     if (e.y < 720 && e.y > 0 && enableProgress) {
@@ -740,6 +738,7 @@ $(document).ready(function () {
 
     }
 
+    let np = 0
     registerScroll('#mainVis', (event, isDown) => {
         if (isDown) {
             if (stage_dd === 0) {
@@ -759,19 +758,30 @@ $(document).ready(function () {
             if (isDown) {
                 index++
             } else {
-                jumpPage = 3
                 index--
             }
             if (index < 0 || index >= data_clean.weibo_date.length || data_clean.weibo_date[index] === dragDate) {
                 if (index >= data_clean.weibo_date.length) {
-                    if(jumpPage === 0){
-                        stage_5()
-                    } else {
-                        jumpPage--
+                    if(np == 0) {
+                        np = 1;showGuideNP(true,null,()=>{stage_5(); np = 0;})
+                    } else if(np == 2) {
+                        np = 0;hideGuideNP();stage_5()
+                    }
+                } else if (index < 0) {
+                    if(np == 0) {
+                        np = 1;showGuideNP(false,null,()=>{videoEnter(); np = 0;})
+                    } else if(np == 2) {
+                        np = 0;hideGuideNP();videoEnter()
                     }
                 }
                 return
             }
+
+            if(np != 0) {
+                np = 0
+                hideGuideNP()
+            }
+
             dragDate = data_clean.weibo_date[index]
 
             progress_pin.select('text').text(`20/${dragDate}`)

@@ -26,6 +26,7 @@ $(document).ready(function () {
     let max_scroll = 710
     let scroll_sakura = min_scroll
 
+    let np = 0
     registerScroll('#sakuraWBDiv', (event, isDown) => {
         if(stage_ss === 1) {
             let tmp
@@ -40,7 +41,12 @@ $(document).ready(function () {
                         opt_cityBridge.showBarDots(scroll_sakura + 100)
                     }
                 } else if (tmp >= max_scroll){
-                    scrollTo(2)
+                    if(np === 0) {
+                        np = 1;showGuideNP(true,null,()=>{scrollTo(2); np = 0;},true)
+                    } else if(np === 2) {
+                        np = 0;hideGuideNP();scrollTo(2)
+                    }
+                    return
                 }
             } else {
                 tmp = scroll_sakura - dur
@@ -52,8 +58,17 @@ $(document).ready(function () {
                         opt_cityBridge.showBarDots(scroll_sakura + 100)
                     }
                 } else if(tmp <= min_scroll) {
-                    scrollTo(0)
+                    if(np === 0) {
+                        np = 1;showGuideNP(false,null,()=>{scrollTo(0); np = 0;},true)
+                    } else if(np === 2) {
+                        np = 0;hideGuideNP();scrollTo(0)
+                    }
+                    return
                 }
+            }
+            if(np !== 0) {
+                np = 0
+                hideGuideNP()
             }
         }
     }, 20)

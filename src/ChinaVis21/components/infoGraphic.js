@@ -144,7 +144,8 @@ $(document).ready(function () {
                                     infoGraphic.select('#supplies5').transition().duration(500).delay(1200).attr('opacity', 1)
                                     infoGraphic.select('#supplies6').transition().duration(500).delay(1200).attr('opacity', 1)
                                     infoGraphic.select('#text1').transition().duration(1000).delay(1000).attr('opacity', 1).attr('transform', 'translate(0 0)')
-                                        .on('end', ()=>{progress = 1})
+                                        .on('end', ()=>showGuideNP(true,()=>progress = 1,()=>{handleProgress()},true))
+
                                 })
                         })
                 })
@@ -159,7 +160,8 @@ $(document).ready(function () {
                                 trainAnima() // 1000ms
                                 infoGraphic.select('#text2').transition().duration(1000).delay(3000).attr('opacity', 1).attr('transform', 'translate(0 0)')
                                 infoGraphic.select('#text3').transition().duration(1000).delay(3000).attr('opacity', 1).attr('transform', 'translate(0 0)')
-                                    .on('end', ()=>{progress = 2})
+                                    .on('end', ()=>showGuideNP(true,()=>progress = 2,()=>{handleProgress()},true))
+
                             })
                     })
             })
@@ -169,30 +171,32 @@ $(document).ready(function () {
                 truckAnima()
                 infoGraphic.select('#text4').transition().duration(1000).delay(1000).attr('opacity', 1).attr('transform', 'translate(0 0)')
                 infoGraphic.select('#text5').transition().duration(1000).delay(1000).attr('opacity', 1).attr('transform', 'translate(0 0)')
-                    .on('end', ()=>{progress = 3})
+                    .on('end', ()=>showGuideNP(true,()=>progress = 3,()=>{handleProgress()},true))
             })
         } else if (progress === 3) {
             progress = -1
             scrollTo(path[3], 1500, ()=>{
                 droneAnima()
                 infoGraphic.select('#text6').transition().duration(1000).delay(3000).attr('opacity', 1).attr('transform', 'translate(0 0)')
-                    .on('end', ()=>{
+                    .on('end', ()=> {
                         progress = 4
                         stage_ig = maxS
                     })
             })
-        }
-        else if (progress === 4) {
+        } else if (progress === 4) {
             airAnima()
             ferryAnima()
             trainAnima()
             truckAnima()
             droneAnima()
         }
+
+        hideGuideNP()
     }
 
     opt_infoGraphic.handleProgress = handleProgress
 
+    let np = 0
     registerScroll('#infoGraphic', (event, isDown) => {
         if(progress === 4) {
             let tmp
@@ -203,13 +207,23 @@ $(document).ready(function () {
             }
             if(tmp >= 0 && tmp <= maxS) {
                 stage_ig = tmp
-                // console.log(4 + stage_ig * dur);
                 scrollTo(4 + stage_ig * dur, 100, false, 'linear')
             } else if (tmp < 0) {
-                scrollTo(3)
+                if(np === 0) {
+                    np = 1;showGuideNP(false,null,()=>{scrollTo(3); np = 0;},true)
+                } else if(np === 2) {
+                    np = 0;hideGuideNP();scrollTo(3)
+                }
+                return
             }
         } else if(progress !== -1) {
             handleProgress()
         }
+
+        if(np !== 0) {
+            np = 0
+            hideGuideNP()
+        }
+
     }, 20)
 })

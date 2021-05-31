@@ -39,7 +39,7 @@
 </head>
 <body style="background-color:#1a1b1e;" onselectstart="return false">
 <div id="flowPin" style="position: fixed; z-index: 2; transform: translate(0px, 0px)scale(1);">
-    <div id="hospital_div" style="height: 300px; display:none; opacity: 0; width: 400px; position: absolute; top:20px; left:90px"></div>
+    <div id="hospital_div" style="height: 300px; display:none; opacity: 0; width: 400px; position: absolute; top:20px; left:30px"></div>
 
     <div id="flowPin_1" style="display:none; opacity: 0; position: absolute; transform: translate(0px, 0px)">
         <svg opacity="1" width="417" height="234" viewBox="0 0 417 234" fill="none">
@@ -327,6 +327,51 @@
            style="font-family:Old Newspapers Sung; font-size: 16px; width: 170px; position: absolute; top: 47.8%; left: 20%;">
             黑夜无论怎样的悠长，白昼终将会到来，希望与爱，从未离开......</p>
     </div>
+
+    <svg id="guide_white" width="300" viewBox="0 0 224 36" fill="none" opacity="0" style="display: none; transform: translate(0px, 0px); left: 810px;top: 980px;position: absolute;">
+        <path d="M136 18L224 17L136 16V18Z" fill="url(#wpaint0_linear)"/>
+        <path d="M88 18L0 17L88 16V18Z" fill="url(#wpaint1_linear)"/>
+        <circle cx="112" cy="18" r="18" fill="url(#wpaint2_linear)" fill-opacity="0.3"/>
+        <circle cx="112" cy="18" r="17.5" stroke="white"/>
+        <path d="M120.485 15.4853L112 23.9706L103.515 15.4853" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs>
+            <linearGradient id="wpaint0_linear" x1="136" y1="17" x2="223.937" y2="19.519" gradientUnits="userSpaceOnUse">
+                <stop stop-color="white"/>
+                <stop offset="1" stop-color="white" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="wpaint1_linear" x1="88" y1="17" x2="0.0626127" y2="19.519" gradientUnits="userSpaceOnUse">
+                <stop stop-color="white"/>
+                <stop offset="1" stop-color="white" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="wpaint2_linear" x1="112" y1="0" x2="112" y2="36" gradientUnits="userSpaceOnUse">
+                <stop stop-color="white"/>
+                <stop offset="1" stop-color="white" stop-opacity="0"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <svg id="guide_blue" width="300" viewBox="0 0 224 36" fill="none" opacity="0" style="display: none; transform: translate(0px, 0px);  left: 810px;top: 980px;position: absolute;">
+        <path d="M136 18L224 17L136 16V18Z" fill="url(#bpaint0_linear)"/>
+        <path d="M88 18L0 17L88 16V18Z" fill="url(#bpaint1_linear)"/>
+        <circle cx="112" cy="18" r="18" fill="url(#bpaint2_linear)" fill-opacity="0.3"/>
+        <circle cx="112" cy="18" r="17.5" stroke="#38A8B8"/>
+        <path d="M120.485 15.4853L112 23.9706L103.515 15.4853" stroke="#38A8B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs>
+            <linearGradient id="bpaint0_linear" x1="136" y1="17" x2="223.937" y2="19.519" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#38A8B8"/>
+                <stop offset="1" stop-color="white" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="bpaint1_linear" x1="88" y1="17" x2="0.0626127" y2="19.519" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#38A8B8"/>
+                <stop offset="1" stop-color="white" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="bpaint2_linear" x1="112" y1="0" x2="112" y2="36" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#38A8B8"/>
+                <stop offset="1" stop-color="white" stop-opacity="0"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
 </div>
 <div style="text-align: -webkit-center;">
     <div id="videoDiv" style="width: 100%; height: 0px; position: fixed; left: 0; right: 0; margin: auto; top: 0%; z-index: 3;">
@@ -342,7 +387,7 @@
             <img src="resources/video/unmute.svg" alt="Speaker_Icon.svg" title="Unmute/speaker icon">
         </label>
         <button class="next-page" onclick="videoExit()" style="display: none">
-            衢行 · 断连
+            ⬇衢行 · 断连⬇
         </button>
 
     </div>
@@ -2017,9 +2062,7 @@
         </svg>
         <div id="sakuraWBDiv" style="width: 100%; position: absolute; top: 14.48%; "></div>
         <svg id="fireSvg" viewBox="0 0 1920 1080" width=100%>
-            <text x="120" y="350" text-anchor="middle" font-size="50px" fill="white" font-family="Old Newspapers Sung">
-                电力
-            </text>
+
             <g id="fireCar" opacity="0">
                 <g>
                     <defs>
@@ -10853,6 +10896,10 @@
                 </text>
                 <text transform="translate(1683.74 883.97)" style="font-size:48px;fill:#fff;font-family:mlgkt">定
                 </text>
+            </g>
+            <g id="modelFrame" opacity="0">
+                <rect x="27" y="17" width="406" height="306" rx="12" style="fill:none;stroke:#38a8b8;stroke-miterlimit:10;stroke-width:3px"></rect>
+                <text x="40" y="300" font-size="30px" fill="white" font-family="Old Newspapers Sung"></text>
             </g>
         </svg>
         <svg id="lastKMSvg" viewBox="0 0 1920 1080" width=100% fill="red">

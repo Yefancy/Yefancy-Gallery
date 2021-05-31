@@ -224,19 +224,34 @@ $(document).ready(function () {
         stage_ll = 2
     }
 
+    let np = 0
     registerScroll('#lastKMSvg', (event, isDown) => {
         if (stage_ll === 0 && isDown > 0) {
             stage_1()
         } else if(stage_ll === 2) {
             if(isDown){
                 if(!pushDot()) {
-                    scrollTo(4)
+                    if(np === 0) {
+                        np = 1;showGuideNP(true,null,()=>{scrollTo(4); np = 0;})
+                    } else if(np === 2) {
+                        np = 0;hideGuideNP();scrollTo(4)
+                    }
+                    return
                 }
             } else {
                 if(!pullDot()) {
-                    scrollTo(2)
+                    if(np === 0) {
+                        np = 1;showGuideNP(false,null,()=>{scrollTo(2); np = 0;})
+                    } else if(np === 2) {
+                        np = 0;hideGuideNP();scrollTo(2)
+                    }
+                    return
                 }
             }
+        }
+        if(np !== 0) {
+            np = 0
+            hideGuideNP()
         }
     }, 50)
 })

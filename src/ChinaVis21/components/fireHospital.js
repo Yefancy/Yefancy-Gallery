@@ -51,7 +51,7 @@ opt_fire = {
     buildingMap: [4, 1, 6, 0, 5, 2, 3, 7],
     lineSize: [8, 8, 8, 8, 8, 5, 5, 4],
     minHeight: 0,
-    debug: true,
+    debug: !IsPC(),
 }
 
 stage_ff = 0
@@ -66,6 +66,7 @@ let selected_vec
 function clickBuilding(i){
     if(selected_building == i || i == null) {
         selected_building = null
+        d3.select('#modelFrame text').text('')
         d3.select('#darkGroup').transition().duration(1000).attr('opacity', 1)
         d3.select(`#gq${i}`).transition().duration(1000).attr('opacity', 0).attr('transform', `translate(0 20)`)
         for (let j = 0; j < typeLines.length; j++) {
@@ -83,6 +84,7 @@ function clickBuilding(i){
         if(selected_building == null) {
             d3.select('#darkGroup').transition().duration(1000).attr('opacity', 0.1)
         }
+        d3.select('#modelFrame text').text(data_hospital[opt_fire.buildingMap[i]].type)
         let gq = d3.select(`#gq${i}`);
         gq.transition().duration(1000).attr('opacity', 1).attr('transform', `translate(0 0)`)
         let children = gq.node().children
@@ -124,6 +126,8 @@ function clickBuilding(i){
 
 $(document).ready(function () {
     let fireSvg = d3.select('#fireSvg')
+    let frame = d3.select('#modelFrame')
+
     fireSvg.on('click', ()=>clickBuilding(selected_building))
 
     for (let i = 1; i <= 15; i++) {
@@ -307,6 +311,10 @@ $(document).ready(function () {
         let sakura_petal
 
         function enterStage2(){
+            //add frame
+            frame.transition().duration(1000)
+                .attr('opacity', 1)
+
             //add building
             let base = buildingGroup.append('g').attr('opacity', 0)
             data_hospital.forEach(data=>{
@@ -555,7 +563,6 @@ $(document).ready(function () {
 
     function stage_3(isDown) {
         stage_ff = 100
-        firstOut = false
         if(isDown) {
             scrollTo(3)
         } else {
@@ -563,6 +570,7 @@ $(document).ready(function () {
         }
     }
 
+    let nextPage = 0
     registerScroll('#fireSvg', (event, isDown) => {
         if(stage_ff == 0 && isDown) {
             stage_1()
@@ -590,16 +598,32 @@ $(document).ready(function () {
                         .on('end', ()=>{
                             d3.select(fireCar.node().children[1]).transition().duration(3000)
                                 .attr('transform', 'translate(540 250)')
-                                .on('end',()=>stage_3(isDown))
+                                .on('end',()=>{firstOut = false})
                         })
                 } else if(!firstOut) {
-                    stage_3(isDown)
+                    if(nextPage === 0) {
+                        nextPage = 1;showGuideNP(true,null,()=>{stage_3(isDown); nextPage = 0;})
+                    } else if(nextPage === 2) {
+                        nextPage = 0;hideGuideNP();stage_3(isDown)
+
+                    }
+                    return
                 }
             } else if(!isDown && np < 0) {
-                stage_3(isDown)
+                if(nextPage === 0) {
+                    nextPage = 1;showGuideNP(false,null,()=>{stage_3(isDown); nextPage = 0;})
+                } else if(nextPage === 2) {
+                    nextPage = 0;hideGuideNP();stage_3(isDown)
+
+                }
+                return
             }
         } else if(stage_ff == 3) {
             stage_2()
+        }
+        if(nextPage !== 0) {
+            nextPage = 0
+            hideGuideNP()
         }
     }, 20)
 })
