@@ -213,33 +213,20 @@ $(document).ready(function () {
                 let bar = d3.select(this)
                 let opacity = parseFloat(bar.attr('opacity'))
                 if(i <= index) {
-                    if(opacity == op){
-                        bar.transition().duration(1000)
+                    if(d3.active(this, 'in') === null) {
+                        bar.interrupt('out')
+                        bar.transition('in').duration(1000)
                             .attr('opacity', 1)
                             .attr('fill', color2)
                     }
-                    else
-                        setTimeout(()=>{
-                            if(parseFloat(bar.attr('opacity') == op)){
-                                bar.transition().duration(1000)
-                                    .attr('opacity', 1)
-                                    .attr('fill', color2)
-                            }
-                        }, 1000)
                 } else if (i >= index) {
-                    if(opacity == 1){
-                        bar.transition().duration(1000)
+                    if(d3.active(this, 'out') === null){
+                        bar.interrupt('in')
+                        bar.transition('out').duration(1000)
                             .attr('opacity', op)
                             .attr('fill', color1)
                     }
-                    else
-                        setTimeout(()=>{
-                            if(opacity == 1){
-                                bar.transition().duration(1000)
-                                    .attr('opacity', op)
-                                    .attr('fill', color1)
-                            }
-                        }, 1000)
+
                 }
             })
             return
@@ -295,6 +282,10 @@ $(document).ready(function () {
                     card.select('text').transition().style('fill', '#212222')
                 }
             })
+        }).on('mouseover', function(){
+            d3.select(this).attr('transform', 'translate(0 5)')
+        }).on('mouseleave', function(){
+            d3.select(this).attr('transform', null)
         })
     }
 

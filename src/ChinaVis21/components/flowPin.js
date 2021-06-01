@@ -119,12 +119,15 @@ function showGuideS(isDown, callback, y){
 
 function changeNavbar(index) {
     let nb = d3.select('#navbar')
-    nb.selectAll('line')
+    nb.selectAll('path')
         .each(function(d){
-            let line = d3.select(this)
-            line.attr('stroke', index === 4 ? '#13344F':'white')
+            let path = d3.select(this)
+            let y = 5 + d * 70;
+            path.attr('fill', (d === index || d - 1 === index) ? 'url(#nbl)': index === 4? '#13344F':'white')
                 .transition().duration(1000)
-                .attr('x2', (d === index || d - 1 === index)? 80:40)
+                .attr('d', (d === index || d - 1 === index) ?
+                    `M0 ${y + 2}L80 ${y}L80 ${y}L0 ${y - 2}Z` :
+                    `M0 ${y + 1}L30 ${y + 1}L30 ${y - 1}L0 ${y -1}Z`)
         })
 
     nb.selectAll('text')
@@ -157,13 +160,12 @@ $(document).ready(function () {
     let nb = d3.select('#navbar')
     nb.selectAll()
         .data([0,1,2,3,4,5])
-        .join('line')
-        .attr('x1', 0)
-        .attr('y1', d=>5 + d*70)
-        .attr('x2', 40)
-        .attr('y2', d=>5 + d*70)
-        .attr('stroke', 'white')
-        .attr('stroke-width', 2)
+        .join('path')
+        .attr('d', d=>{
+            let y = 5 + d * 70;
+            return `M0 ${y + 1}L30 ${y + 1}L30 ${y - 1}L0 ${y -1}Z`
+        })
+        .attr('fill', 'white')
 
     nb.append('g')
         .attr('dominant-baseline', 'middle')

@@ -86,17 +86,23 @@ function IsPC() {
     return flag;
 }
 
+let inTrans = false
 function scrollTo(page, speed, callback, ease){
+    if(inTrans) return;
     if(page !== Page) {
+        inTrans = true
         let offset = `${-pageHeight * page}px`
         if(speed) {
             if(ease) {
                 widthDiv.animate({top: offset}, speed, ease,()=>{
                     callback&&callback()
+                    inTrans = false
                 })
             } else {
                 widthDiv.animate({top: offset}, speed,()=>{
                     callback&&callback()
+                    inTrans = false
+
                 })
             }
             Page = page
@@ -154,6 +160,7 @@ function scrollTo(page, speed, callback, ease){
         widthDiv.animate({top: offset}, 1000, ()=>{
             callbackTo&&callbackTo()
             callbackFrom&&callbackFrom()
+            inTrans = false
         })
         Page = page
     }
