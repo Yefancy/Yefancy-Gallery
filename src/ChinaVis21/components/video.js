@@ -1,5 +1,10 @@
 $(document).ready(function () {
-    showGuideNP(true,null,()=>{videoExit()})
+    showGuideNP(true,null,()=>{
+        videoExit()
+        showCard(0, ()=>{
+            showGuideS(true, ()=>{}, 840, '滚/滑动 开启篇章')
+        })
+    })
 })
 
 function videoExit(){

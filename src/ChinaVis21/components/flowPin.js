@@ -90,13 +90,13 @@ function hideGuideNP() {
 
 let guideS
 let guideS_Callback
-function showGuideS(isDown, callback, y){
+function showGuideS(isDown, callback, y, text){
     let guide = d3.select('#guide_scroll')
     if(guide.style('display') !== 'none') return
     let icon = guide.select('g')
     let Y = y? y : 0
     guideS_Callback = callback
-    guide.select('text').text(isDown? '下滚/滑 换页':'上滚/滑 换页')
+    guide.select('text').text(text? text : isDown? '下滚/滑 换页':'上滚/滑 换页')
     guide.style('display', null).style('top', `${Y}px`)
         .transition().duration(1000)
         .attr('opacity', 1)
@@ -139,8 +139,8 @@ function changeNavbar(index) {
         })
 }
 
-function hideGuide(guide){
-    if(d3.active(guide.node(), 'out') === null) {
+function hideGuide(guide, callback){
+    if(d3.active(guide.node(), 'in') === null && d3.active(guide.node(), 'out') === null) {
         guide.transition('out').duration(1000)
             .attr('opacity', 0)
             .on('end',()=>{
@@ -149,6 +149,7 @@ function hideGuide(guide){
                 guide.on(wheelEvent, null)
                 guide.on('touchstart', null)
                 console.log('out')
+                callback&&callback()
             })
     }
 }
@@ -156,13 +157,20 @@ function hideGuide(guide){
 function showGuide(i){
     let guide = d3.select(`#guide_${i}`)
     guide.style('display', null)
-        .on('click',()=>hideGuide(guide))
-        .on(wheelEvent, ()=>hideGuide(guide))
-        .on('touchstart', ()=>hideGuide(guide))
-        .transition().duration(1000)
+        .on('click',(e)=>{
+            e.cancelBubble = true
+            hideGuide(guide)
+        })
+        .on(wheelEvent, (e)=>{
+            e.cancelBubble = true
+            hideGuide(guide)})
+        .on('touchstart', (e)=>{
+            e.cancelBubble = true
+            hideGuide(guide)
+        })
+        .transition('in').duration(1000)
         .attr('opacity', 1)
         .on('end', ()=>{
-
             let icons = guide.selectChild('g');
             (function anima(){
                 if('none' !== guide.style('display')){
@@ -176,6 +184,28 @@ function showGuide(i){
                 }
             })()
         })
+}
+
+function showCard(i, callback){
+    let gc = d3.select(`#guideCard`)
+    let cards = gc.selectChild('g').selectChildren('g').nodes()
+    for (let j = 0; j < cards.length; j++) {
+        d3.select(cards[j]).attr('visibility', i === j ? 'visible' : 'hidden')
+    }
+    gc.style('display', null)
+        .on('click',(e)=>{
+            e.cancelBubble = true
+            hideGuide(gc, callback)
+        })
+        .on(wheelEvent, (e)=>{
+            e.cancelBubble = true
+            hideGuide(gc, callback)})
+        .on('touchstart', (e)=>{
+            e.cancelBubble = true
+            hideGuide(gc, callback)
+        })
+        .transition('in').duration(2500)
+        .attr('opacity', 1)
 }
 
 $(document).ready(function () {

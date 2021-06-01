@@ -117,12 +117,17 @@ function scrollTo(page, speed, callback, ease){
                 .attr('transform', 'translate(0 1060)');
             opt_sakura.startAnima()
             callbackTo = () => {
-                stage_ss = 1
+                if(stage_ss == 0) {
+                    showCard(1)
+                }
+                stage_ss = 2
             }
         } else if (page == 2){
             callbackTo = ()=>{
                 if(stage_ff === 0) {
-                    opt_fire.stage1()
+                    showCard(2, ()=>{
+                        opt_fire.stage1()
+                    })
                 } else if(stage_ff === 3) {
                     opt_fire.stage2()
                 }
@@ -130,13 +135,17 @@ function scrollTo(page, speed, callback, ease){
         } else if (page == 3){
             callbackTo = ()=>{
                 if(stage_ll == 0){
-                    opt_lastKM.stage1()
+                    showCard(3, ()=>{
+                        opt_lastKM.stage1()
+                    })
                 }
             }
         } else if (page == 4){
             callbackTo = ()=>{
-                stage_ig = 0
-                opt_infoGraphic.handleProgress()
+                showCard(4, ()=>{
+                    stage_ig = 0
+                    opt_infoGraphic.handleProgress()
+                })
             }
         }
         if (Page == 0){
@@ -145,7 +154,7 @@ function scrollTo(page, speed, callback, ease){
             scroll_sakura = 0
             opt_cityBridge.showBarDots(-100)
             opt_sakura.setFallY(0)
-            stage_ss = 0
+            stage_ss = 1
             callbackFrom = () => opt_sakura.stopAnima()
         } else if (Page == 2){
             opt_hospitalRenderer.stopAnima()

@@ -28,7 +28,7 @@ $(document).ready(function () {
     scroll_sakura = min_scroll
 
     registerScroll('#sakuraWBDiv', (event, isDown) => {
-        if(stage_ss === 1) {
+        if(stage_ss === 2) {
             let tmp
             if(isDown) {
                 tmp = scroll_sakura + dur
