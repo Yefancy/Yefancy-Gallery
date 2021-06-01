@@ -158,7 +158,9 @@ function scrollTo(page, speed, callback, ease){
         }
         changeNavbar(page)
         widthDiv.animate({top: offset}, 1000, ()=>{
-            callbackTo&&callbackTo()
+            if(Page == page) {
+                callbackTo&&callbackTo()
+            }
             callbackFrom&&callbackFrom()
             inTrans = false
         })
