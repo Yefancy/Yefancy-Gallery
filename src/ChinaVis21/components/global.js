@@ -157,6 +157,7 @@ function scrollTo(page, speed, callback, ease){
             stage_ig = -1
         }
         changeNavbar(page)
+        Page = page
         widthDiv.animate({top: offset}, 1000, ()=>{
             if(Page == page) {
                 callbackTo&&callbackTo()
@@ -164,7 +165,6 @@ function scrollTo(page, speed, callback, ease){
             callbackFrom&&callbackFrom()
             inTrans = false
         })
-        Page = page
     }
     return true
 }

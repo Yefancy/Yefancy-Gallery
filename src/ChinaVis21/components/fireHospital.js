@@ -633,8 +633,6 @@ $(document).ready(function () {
             } else if(!isDown && np < 0) {
                 showGuideS(false, (e)=>!e&&stage_3(isDown))
             }
-        } else if(stage_ff == 3) {
-            stage_2()
         }
     }, 20)
 })
