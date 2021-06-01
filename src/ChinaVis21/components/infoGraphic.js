@@ -4,8 +4,8 @@ $(document).ready(function () {
     let infoGraphic = d3.select('#infoGraphic')
     let path = [4, 4.82, 5.5, 6.51]
     let progress = 0
-    let maxS = 30
-    let dur = (3820 - 1080) / 1080 / maxS
+    let maxS = 40
+    let dur = (4900 - 1080) / 1080 / maxS
 
     function airAnima() {
         let air1 = infoGraphic.select('#air1');
@@ -180,7 +180,7 @@ $(document).ready(function () {
                 infoGraphic.select('#text6').transition().duration(1000).delay(3000).attr('opacity', 1).attr('transform', 'translate(0 0)')
                     .on('end', ()=> {
                         progress = 4
-                        stage_ig = maxS
+                        stage_ig = Math.floor((path[3] - 4) / dur)
                     })
             })
         } else if (progress === 4) {
@@ -205,8 +205,9 @@ $(document).ready(function () {
                 tmp = stage_ig - 1
             }
             if(tmp >= 0 && tmp <= maxS) {
-                stage_ig = tmp
-                scrollTo(4 + stage_ig * dur, 100, false, 'linear')
+                if(scrollTo(4 + tmp * dur, 100, false, 'linear')) {
+                    stage_ig = tmp
+                }
             } else if (tmp < 0) {
                 showGuideS(false, (e)=>!e&&scrollTo(3))
             }

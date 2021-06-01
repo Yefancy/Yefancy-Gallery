@@ -88,7 +88,7 @@ function IsPC() {
 
 let inTrans = false
 function scrollTo(page, speed, callback, ease){
-    if(inTrans) return;
+    if(inTrans) return false;
     if(page !== Page) {
         inTrans = true
         let offset = `${-pageHeight * page}px`
@@ -164,6 +164,7 @@ function scrollTo(page, speed, callback, ease){
         })
         Page = page
     }
+    return true
 }
 
 function lockOrientation (orientation) {

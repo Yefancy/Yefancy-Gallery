@@ -115,15 +115,14 @@ function showGuideS(isDown, callback, y){
         })
 }
 
-
-
+let guideH = -1
 function changeNavbar(index) {
-    let nb = d3.select('#navbar')
+    let nb = d3.select('#nb_bar')
     nb.selectAll('path')
         .each(function(d){
             let path = d3.select(this)
             let y = 5 + d * 70;
-            path.attr('fill', (d === index || d - 1 === index) ? 'url(#nbl)': index === 4? '#13344F':'white')
+            path.attr('fill', (d === index || d - 1 === index) ? (index === 4 ? 'url(#nbl2)': 'url(#nbl)') : index === 4? '#13344F':'white')
                 .transition().duration(1000)
                 .attr('d', (d === index || d - 1 === index) ?
                     `M0 ${y + 2}L80 ${y}L80 ${y}L0 ${y - 2}Z` :
@@ -137,6 +136,45 @@ function changeNavbar(index) {
                 .transition().duration(1000)
                 .attr('font-size', (i === index)? 24:15)
                 .attr('opacity', (i === index)? 1:0.5)
+        })
+}
+
+function hideGuide(guide){
+    if(d3.active(guide.node(), 'out') === null) {
+        guide.transition('out').duration(1000)
+            .attr('opacity', 0)
+            .on('end',()=>{
+                guide.style('display', 'none')
+                guide.on('click', null)
+                guide.on(wheelEvent, null)
+                guide.on('touchstart', null)
+                console.log('out')
+            })
+    }
+}
+
+function showGuide(i){
+    let guide = d3.select(`#guide_${i}`)
+    guide.style('display', null)
+        .on('click',()=>hideGuide(guide))
+        .on(wheelEvent, ()=>hideGuide(guide))
+        .on('touchstart', ()=>hideGuide(guide))
+        .transition().duration(1000)
+        .attr('opacity', 1)
+        .on('end', ()=>{
+
+            let icons = guide.selectChild('g');
+            (function anima(){
+                if('none' !== guide.style('display')){
+                    icons.transition().duration(3000).ease(d3.easeCubicIn)
+                        .attr('opacity', 0.3)
+                        .on('end',()=>{
+                            icons.transition().duration(3000).ease(d3.easeCubicOut)
+                                .attr('opacity', 1)
+                                .on('end',()=>anima())
+                        })
+                }
+            })()
         })
 }
 
@@ -157,7 +195,7 @@ $(document).ready(function () {
 
     //navbar
     let data = ['疫 · 断', '祈 · 愿', '筑 · 定', '众 · 志', '桥 · 连']
-    let nb = d3.select('#navbar')
+    let nb = d3.select('#nb_bar')
     nb.selectAll()
         .data([0,1,2,3,4,5])
         .join('path')
@@ -181,6 +219,13 @@ $(document).ready(function () {
         .text(d=>data[d])
         .on('click', (e, d)=>{
             scrollTo(d)
+        })
+
+    let nh = d3.select('#nb_help')
+        .on('mouseover',()=>nh.transition().attr('opacity', 1))
+        .on('mouseleave',()=>nh.transition().attr('opacity', 0.6))
+        .on('click', ()=>{
+            showGuide(Page)
         })
 
     changeNavbar(0)

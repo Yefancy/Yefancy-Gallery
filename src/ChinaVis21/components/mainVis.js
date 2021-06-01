@@ -178,7 +178,7 @@ $(document).ready(function () {
                 })
                 .attr('opacity', d=>d.opacity)
             if(sakura_wuhan !== null) {
-                sakura_wuhan.attr('transform',`translate(926 478)rotate(${degree},33,30)`)
+                sakura_wuhan.attr('transform',`translate(931 478)rotate(${degree},27.5,27.5)`)
                 degree += rotateSpeed
             }
 
@@ -301,7 +301,7 @@ $(document).ready(function () {
             //wuhan sakura
             let wuhan = d3.select('#sakuraWuHan');
             wuhan.transition().duration(5000).ease(d3.easeCubicInOut)
-                .attr('transform','translate(926 478)rotate(180,33,30)')
+                .attr('transform','translate(931 478)rotate(180,27.5,27.5)')
                 .on('end', ()=>{sakura_wuhan = wuhan})
 
             //add city dots
@@ -406,10 +406,10 @@ $(document).ready(function () {
                 .on('end', function(e){
                     rayCity()
                 }));
-            d3.select(progressSvg.selectAll('text').nodes()[0])
-                .text(data_clean.weibo_date[0])
-            d3.select(progressSvg.selectAll('text').nodes()[1])
-                .text(data_clean.weibo_date[data_clean.weibo_date.length-1])
+            // d3.select(progressSvg.selectAll('text').nodes()[0])
+            //     .text(data_clean.weibo_date[0])
+            // d3.select(progressSvg.selectAll('text').nodes()[1])
+            //     .text(data_clean.weibo_date[data_clean.weibo_date.length-1])
             progressSvg.attr("display", null)
                 .attr('opacity', 0)
                 .transition().duration(1500)
