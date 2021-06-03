@@ -635,4 +635,5 @@ $(document).ready(function () {
             }
         }
     }, 20)
+    progressLoaded('火神山组件')
 })

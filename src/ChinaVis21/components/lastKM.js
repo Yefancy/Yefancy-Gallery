@@ -239,6 +239,7 @@ $(document).ready(function () {
             }
         }
     }, 50)
+    progressLoaded('最后一公里组件')
 })
 
 

@@ -31,6 +31,7 @@ $(document).ready(function () {
         }
         scene.add(buildingsMeshesGroup)
         buildingsMeshesGroup.position.set(-250, 0, -300)
+        progressLoaded('火神山模型')
     })
 
     let point = new THREE.PointLight(0xffffff);
@@ -145,6 +146,7 @@ $(document).ready(function () {
     opt_hospitalRenderer.selectBuilding = function selectBuilding(index){
         selected_render_building = 4 === index ? 6:6 === index ? 4 : index
     }
+    progressLoaded('医院渲染器组件')
 })
 
 

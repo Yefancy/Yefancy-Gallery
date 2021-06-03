@@ -87,7 +87,9 @@ $(document).ready(function () {
             particles[i].reset(- Math.random() * 1920, - Math.random() * 1080, pos[0] + 545.5 + Math.random() * 40 - 20, pos[1] + 100 + Math.random() * 40 - 20, opt_mainVis.defaultSpeed + opt_mainVis.variantSpeed*Math.random(), Math.random() * 0.03 + 0.09)
         }
 
-        sakura_petal = mainVis.select('#sakuraPetal').selectAll()
+        let sakuraPetal = mainVis.select('#sakuraPetal');
+        sakuraPetal.transition().duration(1000).attr('opacity', 1);
+        sakura_petal = sakuraPetal.selectAll()
             .data(particles)
             .join('path')
             .attr('d', d=>opt_sakura.sakura_svg[Math.floor(Math.random()*12)])
@@ -97,27 +99,39 @@ $(document).ready(function () {
                 return `translate(${d.x},${d.y})scale(${d.scale}, ${d.scale})`
             });
 
+        let skiping = false;
+        sakuraPetal.selectChild('g')
+            .on('click', ()=>{
+                skiping = true
+            });
 
-        function animloop() {
+
+        (function animloop() {
             let out = 0
             sakura_petal
                 .attr('transform', d=>{
                     out += d.update(1)? 1 : 0
                     return `translate(${d.x},${d.y})scale(${d.scale}, ${d.scale})`
                 })
-            if (out > particles.length / 3 && stage_dd === 1){
+            if (skiping) {
                 stage_2()
-            }
-            if (out === particles.length) {
-                sakura_petal.remove()
-                sakura_petal = null
-                console.log('stage_dd_1_exit')
+                sakuraPetal.transition().duration(1000).attr('opacity', 0).remove()
                 return
+            } else {
+                if (out > particles.length / 3 && stage_dd === 1){
+                    stage_2()
+                }
+                if (out === particles.length) {
+                    sakura_petal.remove()
+                    sakura_petal = null
+                    console.log('stage_dd_1_exit')
+                    return
+                }
             }
             window.requestAnimationFrame(animloop);
-        }
-        animloop()
+        })();
     }
+    opt_mainVis.stage1 = stage_1;
 
     function sakuraAnima() {
         let degree = 180
@@ -294,10 +308,6 @@ $(document).ready(function () {
         if (parseFloat(wordSvg.attr('opacity')) === 0){
             wordSvg.transition().duration(6000).attr('opacity', 1)
 
-            //navbar
-            d3.select('#navbar').transition().duration(1000)
-                .attr('opacity', 1)
-
             //wuhan sakura
             let wuhan = d3.select('#sakuraWuHan');
             wuhan.transition().duration(5000).ease(d3.easeCubicInOut)
@@ -423,7 +433,11 @@ $(document).ready(function () {
                     })
                     rayCity()
                 })
-        }, shoudDelay? 0 : 6000)
+
+            //navbar
+            d3.select('#navbar').transition().duration(1000)
+                .attr('opacity', 1)
+        }, shoudDelay? 0 : 4000)
         sakuraAnima()
         let cityDots_grad = d3.select('#cityDots_grad')
         let bcf = ()=>{
@@ -765,19 +779,6 @@ $(document).ready(function () {
     opt_mainVis.stage5 = stage_5
 
     registerScroll('#mainVis', (event, isDown) => {
-        if (isDown) {
-            if (stage_dd === 0) {
-                d3.select('#mainVisBG').transition().duration(2000).delay(1000).attr('opacity', 0)
-                if (opt_mainVis.debug) {
-                    stage_2()
-                } else {
-                    stage_1()
-                }
-            }
-        } else {
-
-        }
-
         if (stage_dd === 2 && enableProgress) {
             let index = data_clean.weibo_date.indexOf(dragDate)
             if (isDown) {
@@ -810,6 +811,6 @@ $(document).ready(function () {
             updateBarChart(dragDate)
         }
     }, 20)
-
+    progressLoaded('主视觉组件')
 })
 

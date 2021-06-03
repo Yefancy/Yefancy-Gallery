@@ -40,7 +40,7 @@ function hidePin(index, func) {
 let guide_focus
 function showGuideNP(isDown, showCallback, clickCallback, isBlue) {
     if(guide_focus != null) {
-        hideGuideNP()
+        return
     }
     if(isBlue) {
         guide_focus = d3.select('#guide_blue')
@@ -109,7 +109,7 @@ function showGuideS(isDown, callback, y, text){
                     .on('end', ()=>{
                         icon.transition().duration(1000).ease(d3.easeCubicOut)
                             .attr('transform', `translate(0 0)`)
-                            .on('end', ()=>anima())
+
                     })
             })()
         })
@@ -259,4 +259,5 @@ $(document).ready(function () {
         })
 
     changeNavbar(0)
+    progressLoaded('卡片组件')
 })

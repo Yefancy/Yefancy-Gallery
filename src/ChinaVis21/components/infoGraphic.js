@@ -1,5 +1,5 @@
 let opt_infoGraphic = {}
-let stage_ig = -1
+let stage_ig = -2
 $(document).ready(function () {
     let infoGraphic = d3.select('#infoGraphic')
     let path = [4, 4.82, 5.5, 6.51]
@@ -216,4 +216,5 @@ $(document).ready(function () {
         }
 
     }, 20)
+    progressLoaded('信息图组件')
 })

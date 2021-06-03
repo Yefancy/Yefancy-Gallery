@@ -71,6 +71,7 @@ $(document).ready(function () {
     window.addEventListener("resize", resize)
     resize()
     // video.get(0).muted = false
+    progressLoaded('事件组件')
 })
 
 function IsPC() {
@@ -142,10 +143,15 @@ function scrollTo(page, speed, callback, ease){
             }
         } else if (page == 4){
             callbackTo = ()=>{
-                showCard(4, ()=>{
+                if(stage_ig == -2){
+                    showCard(4, ()=>{
+                        stage_ig = 0
+                        opt_infoGraphic.handleProgress()
+                    })
+                } else {
                     stage_ig = 0
                     opt_infoGraphic.handleProgress()
-                })
+                }
             }
         }
         if (Page == 0){

@@ -60,5 +60,5 @@ $(document).ready(function () {
     opt_cityBridge.hideBarDots = function(y) {
 
     }
-
+    progressLoaded('桥组件')
 })

@@ -57,5 +57,6 @@ $(document).ready(function () {
             }
         }
     }, 20)
+    progressLoaded('樱花评论组件')
 })
 

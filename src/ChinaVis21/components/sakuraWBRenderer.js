@@ -446,4 +446,6 @@ $(document).ready(function () {
         }
         return true
     }
+
+    progressLoaded('樱花渲染器组件')
 })
