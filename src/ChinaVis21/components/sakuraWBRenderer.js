@@ -95,7 +95,7 @@ $(document).ready(function () {
     // sakura
     let maps = []
     for (let i = 1; i <= 12; i++) {
-        maps.push(new THREE.TextureLoader().load(`resources/sakura2/s${i}.svg`))
+        maps.push(new THREE.TextureLoader().load(`resources/sakura2/s${i}-01.png`))
     }
 
     let ip = d3.interpolateRgb('#D84479', '#F7B3B4')

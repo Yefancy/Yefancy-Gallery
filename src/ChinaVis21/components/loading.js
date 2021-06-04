@@ -39,7 +39,6 @@ function renderLoading(){
         .attr('font-size', 20)
 
     let sakura = d3.select(d3.select('#loading').selectChildren('g').nodes()[1]);
-    console.log(sakura);
     let degree = 0;
     let stop = false;
 

@@ -355,6 +355,7 @@ $(document).ready(function () {
             base.transition().duration(2000)
                 .attr('opacity', 1)
                 .on('end', ()=>{
+                    if(Page !== 2) return
                     stage_2()
                 })
             sakura_petal&&sakura_petal.transition().duration(1000)
