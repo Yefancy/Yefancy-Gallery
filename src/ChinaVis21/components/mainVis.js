@@ -120,6 +120,7 @@ $(document).ready(function () {
             } else {
                 if (out > particles.length / 3 && stage_dd === 1){
                     stage_2()
+                    sakuraPetal.transition().duration(1000).attr('opacity', 0).remove()
                 }
                 if (out === particles.length) {
                     sakura_petal.remove()
