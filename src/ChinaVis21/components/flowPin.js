@@ -258,6 +258,13 @@ $(document).ready(function () {
             showGuide(Page)
         })
 
+    let nc = d3.select('#nb_card')
+        .on('mouseover',()=>nc.transition().attr('opacity', 1))
+        .on('mouseleave',()=>nc.transition().attr('opacity', 0.6))
+        .on('click', ()=>{
+            showCard(Page)
+        })
+
     changeNavbar(0)
     progressLoaded('卡片组件')
 })
