@@ -68,6 +68,7 @@ function init() {
         brainG.children.forEach(p=>{
             p.material.transparent = true
             p.material.opacity = 0.5
+            p.material.side = THREE.FrontSide
             const wireframe = new THREE.WireframeGeometry( p.geometry );
             const line = new THREE.LineSegments( wireframe );
             line.material.depthTest = false;
@@ -104,6 +105,7 @@ function init() {
         pointG.clear();
         Object.keys(f1.__folders).forEach(key=>{
             f1.removeFolder(f1.__folders[key])
+            if(f1.__folders[key]) delete f1.__folders[key]
         })
 
         if (dragControl) dragControl.dispose();
@@ -239,8 +241,9 @@ function init() {
             透明度: 0.5,
         },
         导入数据集 :function (){
-            if(timeController) timeF.remove(timeController)
             this.data = JSON.parse(prompt("粘贴json格式的数据集","[[[0]]]"))
+            if (this.data == null) return;
+            if(timeController) timeF.remove(timeController)
             this.当前时间 = 0
             buildPoints(this.data);
             buildLines(this.data, 0)
