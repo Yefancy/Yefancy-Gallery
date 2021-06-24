@@ -9,6 +9,7 @@ import {Line2} from "../js/threejs/examples/jsm/lines/Line2.js";
 import {LineMaterial} from "../js/threejs/examples/jsm/lines/LineMaterial.js";
 import {TDSLoader} from '../js/threejs/examples/jsm/loaders/TDSLoader.js';
 import * as bci from '../data/bci.js';
+import * as config from '../data/config.js';
 
 let camera, scene, renderer, stats, params, timeF, f1, f2, f3, f4, orbitControl;
 let timeController
@@ -82,6 +83,11 @@ function init() {
         brainWLG.scale.set(4, 4, 4)
         window.brainWLG = brainWLG
         scene.add(brainWLG)
+
+        // pre data
+        params.导入数据集(bci.default)
+        // pre config
+        params.加载配置(config.default)
     } );
 
     // add point mesh
@@ -240,8 +246,8 @@ function init() {
             颜色: 0xffffff,
             透明度: 0.5,
         },
-        导入数据集 :function (){
-            this.data = JSON.parse(prompt("粘贴json格式的数据集","[[[0]]]"))
+        导入数据集 :function (d){
+            this.data = d ? d : JSON.parse(prompt("粘贴json格式的数据集","[[[0]]]"))
             if (this.data == null) return;
             if(timeController) timeF.remove(timeController)
             this.当前时间 = 0
@@ -253,8 +259,8 @@ function init() {
             })
 
         },
-        加载配置 :function (){
-            let config = JSON.parse(prompt("粘贴json格式的配置文件",""))
+        加载配置 :function (c){
+            let config = c ? c : JSON.parse(prompt("粘贴json格式的配置文件",""))
             if(config && config !== "") {
                 for (let i = 0; i < pointG.children.length; i++) {
                     let pos = config.points[i].position
@@ -431,13 +437,6 @@ function init() {
     f4 = gui.addFolder("摄像机配置")
     f4.add(orbitControl, "autoRotate")
     f4.add(orbitControl, "autoRotateSpeed", 0, 30)
-
-    // pre data
-    params.data = bci.default
-    params.当前时间 = 0
-    buildPoints(params.data);
-    buildLines(params.data, 0)
-    timeController = timeF.add(params, '当前时间', 0, params.data[0][0].length - 1).onChange(e=>buildLines(params.data, Math.floor(e)))
 }
 
 function onWindowResize() {
