@@ -1,0 +1,6 @@
+{
+    "type": "module",
+    "devDependencies": {
+        "three-spritetext": "^1.6.2"
+    }
+}
