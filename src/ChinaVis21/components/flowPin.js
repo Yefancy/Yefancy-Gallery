@@ -122,8 +122,8 @@ function changeNavbar(index) {
         .each(function(d){
             let path = d3.select(this)
             let y = 5 + d * 70;
-            path.attr('fill', (d === index || d - 1 === index) ? (index === 4 ? 'url(#nbl2)': 'url(#nbl)') : index === 4? '#13344F':'white')
-                .transition().duration(1000)
+            path.transition().duration(1000)
+                .attr('fill', (d === index || d - 1 === index) ? (index === 4 ? 'url(#nbl2)': 'url(#nbl)') : index === 4? '#13344F':'white')
                 .attr('d', (d === index || d - 1 === index) ?
                     `M0 ${y + 2}L80 ${y}L80 ${y}L0 ${y - 2}Z` :
                     `M0 ${y + 1}L30 ${y + 1}L30 ${y - 1}L0 ${y -1}Z`)
@@ -132,11 +132,30 @@ function changeNavbar(index) {
     nb.selectAll('text')
         .each(function(d, i){
             let text = d3.select(this)
-            text.attr('fill', index === 4 ? '#13344F':'white')
-                .transition().duration(1000)
+            text.transition().duration(1000)
+                .attr('fill', index === 4 ? '#13344F':'white')
+                .attr('font-weight', (i === index) ? 'bold':null)
                 .attr('font-size', (i === index)? 24:15)
-                .attr('opacity', (i === index)? 1:0.5)
         })
+    let nh = d3.select('#nb_help')
+    let nc = d3.select('#nb_card')
+    if(index === 4) {
+        nh.select('circle').transition().duration(1000).attr('stroke', '#13344F')
+        nh.select('path').transition().duration(1000).attr('fill', '#13344F')
+        nh.selectAll('stop').transition().duration(1000).attr('stop-color', '#13344F')
+
+        nc.select('circle').transition().duration(1000).attr('stroke', '#13344F')
+        nc.select('path').transition().duration(1000).attr('fill', '#13344F')
+        nc.selectAll('stop').transition().duration(1000).attr('stop-color', '#13344F')
+    } else {
+        nh.select('circle').transition().duration(1000).attr('stroke', 'white')
+        nh.select('path').transition().duration(1000).attr('fill', 'white')
+        nh.selectAll('stop').transition().duration(1000).attr('stop-color', 'white')
+
+        nc.select('circle').transition().duration(1000).attr('stroke', 'white')
+        nc.select('path').transition().duration(1000).attr('fill', 'white')
+        nc.selectAll('stop').transition().duration(1000).attr('stop-color', 'white')
+    }
 }
 
 function hideGuide(guide, callback){
@@ -237,7 +256,6 @@ $(document).ready(function () {
 
     nb.append('g')
         .attr('dominant-baseline', 'middle')
-        .attr('font-family', 'Regular')
         .selectAll()
         .data([0,1,2,3,4])
         .join('text')

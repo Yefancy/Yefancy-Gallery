@@ -106,24 +106,31 @@ function scrollTo(page, speed, callback, ease){
 
                 })
             }
+            if(Page < 6.57 && page > 6.57) {
+                d3.select('#navbar').transition().duration(1000)
+                    .attr('opacity', 0)
+            } else if (Page > 6.57 && page < 6.57) {
+                d3.select('#navbar').transition().duration(1000)
+                    .attr('opacity', 1)
+            }
             Page = page
             return
         }
         let callbackTo
         let callbackFrom
-        if (page == 0){
+        if (page === 0){
             opt_mainVis.stage2()
-        } else if (page == 1){
+        } else if (page === 1){
             d3.select('#cityBridgeSvg').transition().duration(1000)
                 .attr('transform', 'translate(0 1060)');
             opt_sakura.startAnima()
             callbackTo = () => {
-                if(stage_ss == 0) {
+                if(stage_ss === 0) {
                     showCard(1)
                 }
                 stage_ss = 2
             }
-        } else if (page == 2){
+        } else if (page === 2){
             callbackTo = ()=>{
                 if(stage_ff === 0) {
                     showCard(2, ()=>{
@@ -133,17 +140,17 @@ function scrollTo(page, speed, callback, ease){
                     opt_fire.stage2()
                 }
             }
-        } else if (page == 3){
+        } else if (page === 3){
             callbackTo = ()=>{
-                if(stage_ll == 0){
+                if(stage_ll === 0){
                     showCard(3, ()=>{
                         opt_lastKM.stage1()
                     })
                 }
             }
-        } else if (page == 4){
+        } else if (page === 4){
             callbackTo = ()=>{
-                if(stage_ig == -2){
+                if(stage_ig === -2){
                     showCard(4, ()=>{
                         stage_ig = 0
                         opt_infoGraphic.handleProgress()
@@ -154,27 +161,27 @@ function scrollTo(page, speed, callback, ease){
                 }
             }
         }
-        if (Page == 0){
+        if (Page === 0){
             opt_mainVis.stage5()
-        } else if (Page == 1){
+        } else if (Page === 1){
             scroll_sakura = 0
             opt_cityBridge.showBarDots(-100)
             opt_sakura.setFallY(0)
             stage_ss = 1
             callbackFrom = () => opt_sakura.stopAnima()
-        } else if (Page == 2){
+        } else if (Page === 2){
             opt_hospitalRenderer.stopAnima()
             callbackFrom = ()=>{
                 stage_ff = 3
             }
-        } else if (Page == 3){
-        } else if (Page == 4){
+        } else if (Page === 3){
+        } else if (Page === 4){
             stage_ig = -1
         }
         changeNavbar(page)
         Page = page
         widthDiv.animate({top: offset}, 1000, ()=>{
-            if(Page == page) {
+            if(Page === page) {
                 callbackTo&&callbackTo()
             }
             callbackFrom&&callbackFrom()
